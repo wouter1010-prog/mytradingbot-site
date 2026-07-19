@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MyTradingBot — Handel met een systeem, niet met je onderbuik</title>
+<meta name="description" content="De handelscockpit die nee zegt vóór je fout kunt gaan. Menselijke chart-verificatie, harde regels die trades blokkeren die niet aan je methode voldoen, en proces boven winst. Read-only. Jij houdt de eindklik.">
+<meta name="theme-color" content="#0a0f1c">
+<meta property="og:title" content="MyTradingBot — discipline, geautomatiseerd">
+<meta property="og:description" content="Elke journal vertelt je achteraf wat je fout deed. Wij zorgen dat het niet gebeurt.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a0f1c; --navy-2:#0e1526; --panel:#111a2e; --line:rgba(210,180,120,.14);
+    --gold:#d9a94e; --gold-soft:#e6c680; --ink:#f4f0e6; --muted:#9aa6bd; --faint:#5f6b82;
+    --green:#4ecb8f; --red:#e2685f;
+    --display:"Fraunces",Georgia,serif; --body:"Manrope",system-ui,sans-serif;
+    --wrap:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{background:var(--navy);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  .eyebrow{font:600 12px/1 var(--body);letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:inline-block}
+  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.05;letter-spacing:-.01em}
+  .gold{color:var(--gold)}
+  [data-en]{display:none}
+  html[lang="en"] [data-nl]{display:none}
+  html[lang="en"] [data-en]{display:inline}
+  html[lang="en"] [data-en].block,[data-nl].block{display:block}
+  html[lang="en"] [data-nl].block{display:none}
+  .btn{display:inline-flex;align-items:center;gap:9px;font:700 14px/1 var(--body);letter-spacing:.02em;padding:15px 26px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+  .btn-primary{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#20160a;box-shadow:0 8px 30px rgba(217,169,78,.28)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(217,169,78,.4)}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
+  .btn-ghost:hover{border-color:var(--gold);transform:translateY(-2px)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+  /* ---------- NAV ---------- */
+  header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,15,28,.72);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:19px;letter-spacing:-.005em}.brand .mark svg{display:block;filter:drop-shadow(0 0 9px rgba(217,169,78,.35))}
+  .brand .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(circle at 35% 30%,var(--gold-soft),var(--gold) 60%,#8a6a2a);box-shadow:0 0 18px rgba(217,169,78,.5)}
+  .nav-right{display:flex;gap:26px;align-items:center}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{font:600 13.5px/1 var(--body);color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  @media(max-width:900px){.nav-links a:not(.btn){display:none}}
+  /* language switch */
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.03)}
+  .lang button{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--muted);font:700 12px/1 var(--body);letter-spacing:.06em;padding:9px 11px;cursor:pointer;transition:background .2s,color .2s}
+  .lang button.on{background:rgba(217,169,78,.16);color:var(--ink)}
+  .lang .flag{width:19px;height:13px;border-radius:2px;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+  .flag-nl{background:linear-gradient(180deg,#ae1c28 0 33.3%,#fff 33.3% 66.6%,#21468b 66.6% 100%)}
+  .flag-gb{background:
+    linear-gradient(180deg,transparent 40%,#c8102e 40% 60%,transparent 60%),
+    linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),
+    linear-gradient(45deg,transparent 46%,#fff 46% 54%,transparent 54%),
+    linear-gradient(-45deg,transparent 46%,#fff 46% 54%,transparent 54%),
+    #012169}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden}
+  .hero-media{position:absolute;inset:0;z-index:0;background:radial-gradient(130% 100% at 68% -10%,#132038 0%,#0b1120 42%,#070b14 100%)}
+  .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .hero-media::after{content:"";position:absolute;inset:0;pointer-events:none;background:
+    radial-gradient(90% 70% at 20% 42%,rgba(7,11,20,.72) 0%,rgba(7,11,20,.28) 40%,transparent 70%),
+    linear-gradient(180deg,transparent 0%,transparent 60%,rgba(10,15,28,.55) 85%,var(--navy) 100%)}
+  .hero-in{position:relative;z-index:1;padding:70px 0 90px}
+  .hero h1{font-size:clamp(42px,7vw,86px);max-width:16ch;margin:22px 0 0}
+  .hero h1 em{font-style:italic;color:var(--gold)}
+  .hero p.lead{font-size:clamp(17px,2.1vw,21px);color:var(--muted);max-width:52ch;margin:26px 0 0;line-height:1.55}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:38px}
+  .trust{margin-top:30px;font:500 13px/1.5 var(--body);color:var(--faint);display:flex;gap:22px;flex-wrap:wrap}
+  .trust b{color:var(--muted);font-weight:600}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:96px 0;position:relative}
+  .sec-head{max-width:60ch}
+  .sec-head h2{font-size:clamp(30px,4.4vw,50px);margin:16px 0 0}
+  .sec-head p{color:var(--muted);font-size:17px;margin-top:16px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+
+  /* ---------- PROBLEM ---------- */
+  .problem{background:linear-gradient(180deg,var(--navy),var(--navy-2))}
+  .problem .quote{font-family:var(--display);font-size:clamp(26px,3.6vw,40px);line-height:1.25;max-width:22ch;margin-top:20px}
+  .problem .quote span{color:var(--gold)}
+  .problem .cols{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:56px}
+  .problem .cols p{color:var(--muted);font-size:16.5px}
+  .problem .cols h3{font-size:20px;color:var(--ink);margin-bottom:10px}
+  @media(max-width:760px){.problem .cols{grid-template-columns:1fr;gap:32px}}
+
+  /* ---------- STEPS ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px 26px;position:relative;overflow:hidden}
+  .step::before{content:attr(data-n);position:absolute;top:14px;right:20px;font-family:var(--display);font-size:58px;color:rgba(217,169,78,.13);font-style:italic}
+  .step h3{font-size:22px;margin:10px 0 12px}
+  .step p{color:var(--muted);font-size:15.5px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+
+  /* ---------- FEATURES ---------- */
+  .features{background:linear-gradient(180deg,var(--navy-2),var(--navy))}
+  .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
+  .feat{background:rgba(255,255,255,.015);border:1px solid var(--line);border-radius:16px;padding:28px 24px;transition:transform .25s ease,border-color .25s ease}
+  .feat:hover{transform:translateY(-4px);border-color:rgba(217,169,78,.4)}
+  .feat .ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:rgba(217,169,78,.1);border:1px solid var(--line);margin-bottom:16px;color:var(--gold);font-size:19px}
+  .feat h3{font-size:19px;margin-bottom:9px}
+  .feat p{color:var(--muted);font-size:15px}
+  @media(max-width:880px){.fgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.fgrid{grid-template-columns:1fr}}
+
+  /* ---------- PROOF ---------- */
+  .proof .plist{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+  .pcard{border:1px solid var(--line);border-radius:16px;padding:28px 24px;background:var(--panel)}
+  .pcard h3{font-size:18px;margin-bottom:10px}
+  .pcard p{color:var(--muted);font-size:15px}
+  .pcard .tag{font:700 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--green);display:inline-block;margin-bottom:14px}
+  @media(max-width:820px){.proof .plist{grid-template-columns:1fr}}
+
+  /* ---------- AUDIENCE ---------- */
+  .aud{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:52px}
+  .aud .card{border:1px solid var(--line);border-radius:16px;padding:30px 28px}
+  .aud .yes{background:linear-gradient(180deg,rgba(78,203,143,.06),transparent)}
+  .aud .no{background:linear-gradient(180deg,rgba(226,104,95,.05),transparent)}
+  .aud h3{font-size:21px;margin-bottom:18px}
+  .aud ul{list-style:none;display:grid;gap:12px}
+  .aud li{color:var(--muted);font-size:15.5px;padding-left:26px;position:relative}
+  .aud li::before{position:absolute;left:0;top:1px;font-weight:700}
+  .aud .yes li::before{content:"✓";color:var(--green)}
+  .aud .no li::before{content:"✕";color:var(--red)}
+  @media(max-width:760px){.aud{grid-template-columns:1fr}}
+
+  /* ---------- CTA BAND ---------- */
+  .band{text-align:center;background:
+    radial-gradient(90% 140% at 50% 0%,rgba(217,169,78,.14),transparent 60%),var(--navy-2);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .band h2{font-size:clamp(30px,5vw,54px);max-width:20ch;margin:18px auto 0}
+  .band p{color:var(--muted);max-width:50ch;margin:20px auto 0;font-size:17px}
+  .band .btn{margin-top:34px}
+  .band small{display:block;margin-top:18px;color:var(--faint);font-size:13px}
+
+  /* ---------- FAQ ---------- */
+  .faq details{border-bottom:1px solid var(--line);padding:22px 0}
+  .faq summary{cursor:pointer;font-family:var(--display);font-size:20px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--gold);font-size:26px;transition:transform .2s}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq p{color:var(--muted);font-size:16px;margin-top:14px;max-width:70ch}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--navy);padding:60px 0 40px;border-top:1px solid var(--line)}
+  .foot-top{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .foot-note{color:var(--faint);font-size:13px;margin-top:30px;max-width:80ch;line-height:1.7}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.3" y="1.3" width="27.4" height="27.4" rx="8.5" stroke="url(#lg)" stroke-width="1.4"/><path d="M6 20.5L12 15.5L17 18L24 8" stroke="url(#lg)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="8" r="2.3" fill="#e6c680"/><defs><linearGradient id="lg" x1="2" y1="28" x2="28" y2="2" gradientUnits="userSpaceOnUse"><stop stop-color="#b98d3e"/><stop offset="1" stop-color="#e6c680"/></linearGradient></defs></svg></span>MyTradingBot</a>
+    <div class="nav-right">
+      <nav class="nav-links" aria-label="Menu">
+        <a href="#waarom"><span data-nl>Waarom</span><span data-en>Why</span></a>
+        <a href="#hoe"><span data-nl>Hoe het werkt</span><span data-en>How it works</span></a>
+        <a href="#functies"><span data-nl>Functies</span><span data-en>Features</span></a>
+        <a href="#bewijs"><span data-nl>Bewijs</span><span data-en>Proof</span></a>
+        <a href="#toegang" class="btn btn-ghost"><span data-nl>Vraag toegang</span><span data-en>Request access</span></a>
+      </nav>
+      <div class="lang" role="group" aria-label="Taal / Language">
+        <button id="btn-nl" class="on" onclick="setLang('nl')" aria-label="Nederlands"><span class="flag flag-nl"></span>NL</button>
+        <button id="btn-en" onclick="setLang('en')" aria-label="English"><span class="flag flag-gb"></span>EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0">
+    <div class="hero-media" aria-hidden="true">
+      <video autoplay muted loop playsinline poster="mtb-hero-poster.jpg"><source src="mtb-hero.mp4" type="video/mp4"></video>
+    </div>
+    <div class="wrap hero-in">
+      <span class="eyebrow reveal"><span data-nl>Discipline, geautomatiseerd · Private bèta</span><span data-en>Discipline, automated · Private beta</span></span>
+      <h1 class="reveal">
+        <span data-nl>Handel met een <em>systeem</em>.<br>Niet met je onderbuik.</span>
+        <span data-en>Trade with a <em>system</em>.<br>Not your gut.</span>
+      </h1>
+      <p class="lead reveal">
+        <span data-nl>Elke journal vertelt je achteráf wat je fout deed. MyTradingBot zorgt dat het niet gebeurt: de cockpit bewaakt jouw regels, verifieert je kaart, en zegt nee vóór je fout kunt gaan. Jij houdt altijd de laatste klik.</span>
+        <span data-en>Every journal tells you afterwards what you did wrong. MyTradingBot makes sure it doesn't happen: the cockpit guards your rules, verifies your chart, and says no before you can go wrong. You always keep the final click.</span>
+      </p>
+      <div class="hero-cta reveal">
+        <a href="#toegang" class="btn btn-primary"><span data-nl>Vraag toegang tot de bèta →</span><span data-en>Request beta access →</span></a>
+        <a href="#hoe" class="btn btn-ghost"><span data-nl>Bekijk hoe het werkt</span><span data-en>See how it works</span></a>
+      </div>
+      <div class="trust reveal">
+        <span><b>Read-only</b> — <span data-nl>nooit een order zonder jouw klik</span><span data-en>never an order without your click</span></span>
+        <span><b>18+</b> · <span data-nl>geen winstgarantie</span><span data-en>no profit guarantee</span></span>
+        <span><b><span data-nl>Proces</span><span data-en>Process</span></b> <span data-nl>boven uitkomst</span><span data-en>over outcome</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem" id="waarom">
+    <div class="wrap">
+      <span class="eyebrow reveal"><span data-nl>Het echte probleem</span><span data-en>The real problem</span></span>
+      <p class="quote reveal">
+        <span data-nl>Je verliest niet door een gebrek aan kennis. Je verliest op de trades die je <span>niet had mogen nemen</span>.</span>
+        <span data-en>You don't lose from a lack of knowledge. You lose on the trades you <span>shouldn't have taken</span>.</span>
+      </p>
+      <div class="cols">
+        <div class="reveal">
+          <h3><span data-nl>Wilskracht schaalt niet</span><span data-en>Willpower doesn't scale</span></h3>
+          <p><span data-nl>Je kent je regels. Toch verruim je die stop, pak je die midrange-trade, of ga je revenge na twee verliezers. Een journal ziet dat — maar pas als het al gebeurd is. Een blocker verbiedt alles zonder te weten waaróm. Geen van beide grijpt in op het moment dat het telt.</span><span data-en>You know your rules. Yet you widen that stop, take the midrange trade, or go revenge after two losses. A journal sees it — but only once it's done. A blocker forbids everything without knowing why. Neither intervenes at the moment that matters.</span></p>
+        </div>
+        <div class="reveal">
+          <h3><span data-nl>De markt straft impuls, niet inzicht</span><span data-en>The market punishes impulse, not insight</span></h3>
+          <p><span data-nl>85% van de tijd doet de markt niets interessants. De winst zit in geduld — in de paar momenten waarop álles klopt. Elk platform beloont activiteit. MyTradingBot beloont de discipline om te wachten: geen-trade is de norm, niet de uitzondering.</span><span data-en>85% of the time the market does nothing interesting. The edge is in patience — in the few moments when everything lines up. Every platform rewards activity. MyTradingBot rewards the discipline to wait: no-trade is the norm, not the exception.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- HOW -->
+  <section id="hoe">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow"><span data-nl>Hoe het werkt</span><span data-en>How it works</span></span>
+        <h2><span data-nl>Jij tekent. De machine bewaakt. Jij schiet.</span><span data-en>You draw. The machine guards. You pull the trigger.</span></h2>
+        <p><span data-nl>Drie lagen, één principe: je automatiseert niet het traden — je automatiseert de discipline.</span><span data-en>Three layers, one principle: you don't automate the trading — you automate the discipline.</span></p>
+      </div>
+      <div class="steps">
+        <div class="step reveal" data-n="01">
+          <h3><span data-nl>Jij tekent je kaart</span><span data-en>You draw your map</span></h3>
+          <p><span data-nl>Je markeert je zones en niveaus op je chart, precies zoals je methode het voorschrijft. Jóúw kaart is de enige bron van waarheid — de machine verzint nooit setups.</span><span data-en>You mark your zones and levels on your chart, exactly as your method prescribes. Your map is the only source of truth — the machine never invents setups.</span></p>
+        </div>
+        <div class="step reveal" data-n="02">
+          <h3><span data-nl>De machine bewaakt de regels</span><span data-en>The machine guards the rules</span></h3>
+          <p><span data-nl>Harde poorten controleren automatisch: risico, reward-risk, positie in de range, richting, momentum. Voldoet het niet aan je methode? Dan komt er geen ticket. Geen discussie.</span><span data-en>Hard gates check automatically: risk, reward-risk, position in the range, direction, momentum. Doesn't meet your method? Then no ticket. No discussion.</span></p>
+        </div>
+        <div class="step reveal" data-n="03">
+          <h3><span data-nl>Jij houdt de eindklik</span><span data-en>You keep the final click</span></h3>
+          <p><span data-nl>Klopt alles, dan zet de cockpit je ticket klaar — entry, stop, drie doelen, sizing — en jij plaatst 'm zelf. De software plaatst nooit een order. Read-only, altijd.</span><span data-en>If everything checks out, the cockpit prepares your ticket — entry, stop, three targets, sizing — and you place it yourself. The software never places an order. Read-only, always.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="functies">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow"><span data-nl>Wat je krijgt</span><span data-en>What you get</span></span>
+        <h2><span data-nl>Een cockpit die voor jou werkt, niet tegen je.</span><span data-en>A cockpit that works for you, not against you.</span></h2>
+      </div>
+      <div class="fgrid">
+        <div class="feat reveal"><div class="ic">◈</div><h3><span data-nl>Harde poorten vóór de trade</span><span data-en>Hard gates before the trade</span></h3><p><span data-nl>Onder je eigen minimale reward-risk, in het midden van de range, of tegen je regels in — geblokkeerd, met de reden erbij. Niemand anders doet dit vóóraf.</span><span data-en>Below your own minimum reward-risk, mid-range, or against your rules — blocked, with the reason. Nobody else does this beforehand.</span></p></div>
+        <div class="feat reveal"><div class="ic">◎</div><h3><span data-nl>Menselijke kaart-verificatie</span><span data-en>Human chart verification</span></h3><p><span data-nl>De machine leest je vier timeframes, jij tekent ze af. Alleen een door jóú gecontroleerde kaart mag een ticket voeden.</span><span data-en>The machine reads your four timeframes, you sign them off. Only a chart verified by you can feed a ticket.</span></p></div>
+        <div class="feat reveal"><div class="ic">▲</div><h3><span data-nl>Proces boven winst</span><span data-en>Process over profit</span></h3><p><span data-nl>Elke trade krijgt een procescijfer, niet alleen een resultaat. Een winst kan een slechte trade zijn; een verlies een goede. Je leert van het juiste.</span><span data-en>Every trade gets a process grade, not just a result. A win can be a bad trade; a loss a good one. You learn from the right thing.</span></p></div>
+        <div class="feat reveal"><div class="ic">✦</div><h3><span data-nl>Je persoonlijke mentor</span><span data-en>Your personal mentor</span></h3><p><span data-nl>Een coach die jouw volledige methode kent en 's ochtends de dag met je doorneemt: scenario's, geen voorspellingen. In gewone taal, ook voor een beginner.</span><span data-en>A coach that knows your full method and walks through the day with you each morning: scenarios, not predictions. In plain language, even for a beginner.</span></p></div>
+        <div class="feat reveal"><div class="ic">⬡</div><h3><span data-nl>Automatisch orderdagboek</span><span data-en>Automatic trade journal</span></h3><p><span data-nl>Elke trade wordt eerlijk gelogd — bron, kosten, richting, R-resultaat — met je echte cijfers. Je edge groeit uit data, niet uit gevoel.</span><span data-en>Every trade is logged honestly — source, costs, direction, R-result — with your real numbers. Your edge grows from data, not feeling.</span></p></div>
+        <div class="feat reveal"><div class="ic">◐</div><h3><span data-nl>Read-only veiligheid</span><span data-en>Read-only safety</span></h3><p><span data-nl>De koppeling met je exchange is alléén-lezen. De cockpit ziet je account, maar kan nooit een order plaatsen of geld verplaatsen. Jij houdt de controle.</span><span data-en>The connection to your exchange is read-only. The cockpit sees your account but can never place an order or move money. You stay in control.</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section class="proof" id="bewijs">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow"><span data-nl>Eerlijk bewijs, geen holle beloften</span><span data-en>Honest proof, no empty promises</span></span>
+        <h2><span data-nl>Wat we níét beloven, is precies waarom je ons kunt vertrouwen.</span><span data-en>What we don't promise is exactly why you can trust us.</span></h2>
+      </div>
+      <div class="plist">
+        <div class="pcard reveal"><span class="tag"><span data-nl>Geen winstgarantie</span><span data-en>No profit guarantee</span></span><h3><span data-nl>Discipline, geen wondermiddel</span><span data-en>Discipline, not a magic bullet</span></h3><p><span data-nl>Traden blijft risico. Wij verkopen geen rendement — we zorgen dat je je eigen regels volgt. De rest is aan jou en de markt.</span><span data-en>Trading stays risky. We don't sell returns — we make sure you follow your own rules. The rest is up to you and the market.</span></p></div>
+        <div class="pcard reveal"><span class="tag">Read-only</span><h3><span data-nl>Jij houdt de eindklik</span><span data-en>You keep the final click</span></h3><p><span data-nl>Geen enkele automatische order. De machine bereidt voor en bewaakt; jij beslist en plaatst. Altijd.</span><span data-en>No automatic orders whatsoever. The machine prepares and guards; you decide and place. Always.</span></p></div>
+        <div class="pcard reveal"><span class="tag"><span data-nl>Eerlijke cijfers</span><span data-en>Honest numbers</span></span><h3><span data-nl>Kleine steekproef = kleine steekproef</span><span data-en>Small sample = small sample</span></h3><p><span data-nl>Bij te weinig trades zeggen we dat. Geen opgeblazen winrates, geen misleidende grafieken. Cijfers waar je op kunt bouwen.</span><span data-en>With too few trades, we say so. No inflated win rates, no misleading charts. Numbers you can build on.</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- AUDIENCE -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow"><span data-nl>Voor wie</span><span data-en>Who it's for</span></span>
+        <h2><span data-nl>Gebouwd voor traders die klaar zijn met zichzelf saboteren.</span><span data-en>Built for traders done sabotaging themselves.</span></h2>
+      </div>
+      <div class="aud">
+        <div class="card yes reveal">
+          <h3><span data-nl>Dit is voor jou als…</span><span data-en>This is for you if…</span></h3>
+          <ul>
+            <li><span data-nl>je een bewezen methode volgt maar je eigen regels blijft breken</span><span data-en>you follow a proven method but keep breaking your own rules</span></li>
+            <li><span data-nl>je weet dat geduld je edge is, maar je onderbuik anders beslist</span><span data-en>you know patience is your edge, but your gut decides otherwise</span></li>
+            <li><span data-nl>je wilt leren van je proces, niet alleen van je P&L</span><span data-en>you want to learn from your process, not just your P&L</span></li>
+            <li><span data-nl>je de controle over je eindklik nooit uit handen wilt geven</span><span data-en>you never want to hand over control of your final click</span></li>
+          </ul>
+        </div>
+        <div class="card no reveal">
+          <h3><span data-nl>Dit is níét voor jou als…</span><span data-en>This is not for you if…</span></h3>
+          <ul>
+            <li><span data-nl>je een bot zoekt die automatisch voor je handelt</span><span data-en>you want a bot that trades automatically for you</span></li>
+            <li><span data-nl>je een garantie op winst verwacht</span><span data-en>you expect a guarantee of profit</span></li>
+            <li><span data-nl>je liever hype hebt dan eerlijke cijfers</span><span data-en>you prefer hype over honest numbers</span></li>
+            <li><span data-nl>je niet bereid bent te wachten op de juiste setup</span><span data-en>you're not willing to wait for the right setup</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="band" id="toegang">
+    <div class="wrap">
+      <span class="eyebrow reveal"><span data-nl>Private bèta · op uitnodiging</span><span data-en>Private beta · invite-only</span></span>
+      <h2 class="reveal"><span data-nl>Klaar om te handelen met een systeem in plaats van je onderbuik?</span><span data-en>Ready to trade with a system instead of your gut?</span></h2>
+      <p class="reveal"><span data-nl>De bèta draait op uitnodiging, in oefenmodus. Vraag toegang en ontvang een eenmalige code — jouw geïsoleerde werkruimte, geen risico, geen echt geld.</span><span data-en>The beta runs invite-only, in practice mode. Request access and receive a one-time code — your isolated workspace, no risk, no real money.</span></p>
+      <a href="mailto:vdbrink.wouter@gmail.com?subject=Toegang%20MyTradingBot%20b%C3%A8ta" class="btn btn-primary reveal"><span data-nl>Vraag je bèta-code aan →</span><span data-en>Request your beta code →</span></a>
+      <small class="reveal"><span data-nl>18+ · Speel met mate · Voorspel-/analysetool, geen winstgarantie · Read-only, jij houdt altijd de eindklik.</span><span data-en>18+ · Play responsibly · Prediction/analysis tool, no profit guarantee · Read-only, you always keep the final click.</span></small>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="wrap" style="max-width:900px">
+      <div class="sec-head reveal" style="margin-bottom:20px">
+        <span class="eyebrow"><span data-nl>Veelgestelde vragen</span><span data-en>Frequently asked</span></span>
+        <h2><span data-nl>Nog even dit.</span><span data-en>One more thing.</span></h2>
+      </div>
+      <details class="reveal" open><summary><span data-nl>Handelt MyTradingBot automatisch voor mij?</span><span data-en>Does MyTradingBot trade automatically for me?</span></summary><p><span data-nl>Nee — en dat is bewust. De cockpit bereidt je ticket voor en bewaakt je regels, maar plaatst nooit zelf een order. Jij houdt altijd de laatste klik. De koppeling met je exchange is alleen-lezen.</span><span data-en>No — and that's by design. The cockpit prepares your ticket and guards your rules, but never places an order itself. You always keep the final click. The exchange connection is read-only.</span></p></details>
+      <details class="reveal"><summary><span data-nl>Is dit gokken?</span><span data-en>Is this gambling?</span></summary><p><span data-nl>Nee. MyTradingBot is een voorspel- en analysetool die je helpt je eigen methode consequent te volgen. We beloven nooit winst — we zorgen dat je discipline houdt. Traden blijft risico en blijft jouw verantwoordelijkheid.</span><span data-en>No. MyTradingBot is a prediction and analysis tool that helps you follow your own method consistently. We never promise profit — we make sure you keep discipline. Trading stays risky and remains your responsibility.</span></p></details>
+      <details class="reveal"><summary><span data-nl>Voor wie is het?</span><span data-en>Who is it for?</span></summary><p><span data-nl>Voor traders die een methode volgen maar merken dat impuls, revenge en ongeduld hun resultaat slopen. De cockpit maakt je discipline meetbaar en afdwingbaar — zonder de controle uit handen te nemen.</span><span data-en>For traders who follow a method but find impulse, revenge and impatience wrecking their results. The cockpit makes your discipline measurable and enforceable — without taking control away.</span></p></details>
+      <details class="reveal"><summary><span data-nl>Werkt de coach ook voor beginners?</span><span data-en>Does the coach work for beginners too?</span></summary><p><span data-nl>Ja. De ingebouwde mentor legt elk concept uit in gewone taal, met voorbeelden — begrijpelijk of je nu net begint of al jaren handelt. Hij neemt 's ochtends de dag met je door in scenario's, niet in voorspellingen.</span><span data-en>Yes. The built-in mentor explains every concept in plain language, with examples — clear whether you're just starting or have traded for years. It walks through the day with you each morning in scenarios, not predictions.</span></p></details>
+      <details class="reveal"><summary><span data-nl>Hoe kom ik binnen?</span><span data-en>How do I get in?</span></summary><p><span data-nl>De bèta is op uitnodiging en draait in oefenmodus (paper). Vraag toegang aan en je ontvangt een eenmalige code voor je eigen geïsoleerde werkruimte — gescheiden van iedereen, zonder echt geld.</span><span data-en>The beta is invite-only and runs in practice mode (paper). Request access and you'll receive a one-time code for your own isolated workspace — separated from everyone, with no real money.</span></p></details>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.3" y="1.3" width="27.4" height="27.4" rx="8.5" stroke="url(#lg)" stroke-width="1.4"/><path d="M6 20.5L12 15.5L17 18L24 8" stroke="url(#lg)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="8" r="2.3" fill="#e6c680"/><defs><linearGradient id="lg" x1="2" y1="28" x2="28" y2="2" gradientUnits="userSpaceOnUse"><stop stop-color="#b98d3e"/><stop offset="1" stop-color="#e6c680"/></linearGradient></defs></svg></span>MyTradingBot</a>
+      <div class="nav-links" style="gap:24px">
+        <a href="#waarom"><span data-nl>Waarom</span><span data-en>Why</span></a>
+        <a href="#hoe"><span data-nl>Hoe het werkt</span><span data-en>How it works</span></a>
+        <a href="#functies"><span data-nl>Functies</span><span data-en>Features</span></a>
+        <a href="#toegang"><span data-nl>Toegang</span><span data-en>Access</span></a>
+      </div>
+    </div>
+    <p class="foot-note">
+      <span data-nl class="block">MyTradingBot is een voorspel- en analysetool voor het volgen van je eigen handelsmethode. Het is geen beleggingsadvies en biedt geen enkele garantie op rendement. Traden met hefboom kan leiden tot verlies van je volledige inleg. De koppeling met je exchange is alleen-lezen; de software plaatst nooit zelf een order en jij houdt altijd de eindklik. 18+ · speel met mate. © MMXXVI MyTradingBot.</span>
+      <span data-en class="block">MyTradingBot is a prediction and analysis tool for following your own trading method. It is not investment advice and offers no guarantee of returns whatsoever. Trading with leverage can lead to the loss of your entire deposit. The connection to your exchange is read-only; the software never places an order itself and you always keep the final click. 18+ · play responsibly. © MMXXVI MyTradingBot.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){
+    document.documentElement.lang = l;
+    document.getElementById('btn-nl').classList.toggle('on', l==='nl');
+    document.getElementById('btn-en').classList.toggle('on', l==='en');
+    try{ localStorage.setItem('mtb.lang', l); }catch(e){}
+  }
+  (function(){
+    var saved='nl';
+    try{ saved = localStorage.getItem('mtb.lang') || (navigator.language||'nl').slice(0,2); }catch(e){}
+    setLang(saved==='en'?'en':'nl');
+  })();
+
+  // Motion that whispers — reveal on scroll, respects reduced-motion.
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(rm){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+  else{
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold:.12, rootMargin:'0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el,i){ el.style.transitionDelay=(Math.min(i%6,5)*55)+'ms'; io.observe(el); });
+  }
+</script>
+
+
+<script>/*heroSpeed*/(function(){var v=document.querySelector(".hero-media video");if(!v)return;var r=0.7;v.playbackRate=r;["loadedmetadata","play","canplay"].forEach(function(e){v.addEventListener(e,function(){v.playbackRate=r;});});})();</script>
+</body>
+</html>
