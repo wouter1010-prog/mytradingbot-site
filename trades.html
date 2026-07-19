@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MyTradingBot — Elke trade op video</title>
+<meta name="description" content="Radicale transparantie: elke trade opgenomen en gepost — winst, verlies en no-trade. Geen cherry-picking.">
+<meta name="theme-color" content="#0a0f1c">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0a0f1c;--navy-2:#0e1526;--panel:#111a2e;--line:rgba(210,180,120,.14);--gold:#d9a94e;--gold-soft:#e6c680;--ink:#f4f0e6;--muted:#9aa6bd;--faint:#5f6b82;--green:#4ecb8f;--red:#e2685f;--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--wrap:1180px;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(120% 70% at 70% -5%,#132038 0%,#0b1120 42%,#070b14 100%);background-attachment:fixed;color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+  [data-en]{display:none}
+  html[lang="en"] [data-nl]{display:none}
+  html[lang="en"] [data-en]{display:inline}
+  .btn{display:inline-flex;align-items:center;gap:9px;font:700 14px/1 var(--body);letter-spacing:.02em;padding:13px 22px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
+  .btn-ghost:hover{border-color:var(--gold)}
+  .btn-primary{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#20160a;box-shadow:0 8px 30px rgba(217,169,78,.28)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+  header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,15,28,.72);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:19px;letter-spacing:-.005em}
+  .brand .mark svg{display:block;filter:drop-shadow(0 0 9px rgba(217,169,78,.35))}
+  .nav-right{display:flex;gap:16px;align-items:center}
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.03)}
+  .lang button{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--muted);font:700 12px/1 var(--body);letter-spacing:.06em;padding:9px 11px;cursor:pointer}
+  .lang button.on{background:rgba(217,169,78,.16);color:var(--ink)}
+  .flag{width:19px;height:13px;border-radius:2px;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+  .flag-nl{background:linear-gradient(180deg,#ae1c28 0 33.3%,#fff 33.3% 66.6%,#21468b 66.6% 100%)}
+  .flag-gb{background:linear-gradient(180deg,transparent 40%,#c8102e 40% 60%,transparent 60%),linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(45deg,transparent 46%,#fff 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,#fff 46% 54%,transparent 54%),#012169}
+  @media(max-width:620px){.nav-right .btn{display:none}}
+
+  .hero{padding:56px 0 20px;text-align:center}
+  .eyebrow{font:700 11px/1 var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  .hero h1{font-size:clamp(34px,6vw,56px);margin:16px 0 0}
+  .hero p{color:var(--muted);font-size:clamp(16px,2vw,19px);max-width:60ch;margin:18px auto 0}
+  .stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .stat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:120px}
+  .stat b{font-family:var(--display);font-size:26px;color:var(--gold);display:block}
+  .stat span{color:var(--muted);font-size:12.5px}
+
+  .filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:34px 0 10px}
+  .filters button{background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--muted);font:600 13px/1 var(--body);padding:10px 16px;border-radius:20px;cursor:pointer;transition:.2s}
+  .filters button.on{background:rgba(217,169,78,.16);border-color:rgba(217,169,78,.4);color:var(--ink)}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:26px 0 60px}
+  .card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel);transition:transform .25s,border-color .25s;cursor:pointer}
+  .card:hover{transform:translateY(-4px);border-color:rgba(217,169,78,.4)}
+  .card.soon{cursor:default;opacity:.75}
+  .card .thumb{aspect-ratio:16/10;position:relative;display:grid;place-items:center;background:radial-gradient(120% 120% at 60% 10%,#16223c,#0b1322);border-bottom:1px solid var(--line)}
+  .card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .card .thumb .play{position:relative;z-index:1;width:56px;height:56px;border-radius:50%;background:rgba(10,15,28,.55);border:1px solid rgba(217,169,78,.5);display:grid;place-items:center;backdrop-filter:blur(4px)}
+  .card .thumb .play::after{content:"";border-left:16px solid var(--gold);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+  .card .tag{position:absolute;top:12px;left:12px;z-index:1;font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;padding:6px 9px;border-radius:20px}
+  .tag.win{color:var(--green);background:rgba(78,203,143,.14);border:1px solid rgba(78,203,143,.3)}
+  .tag.loss{color:var(--red);background:rgba(226,104,95,.14);border:1px solid rgba(226,104,95,.3)}
+  .tag.notrade{color:var(--gold-soft);background:rgba(217,169,78,.14);border:1px solid rgba(217,169,78,.3)}
+  .tag.soon{color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line)}
+  .card .meta{padding:16px 18px}
+  .card .meta h3{font-size:17px;margin-bottom:4px}
+  .card .meta .date{color:var(--faint);font-size:12.5px;margin-bottom:8px}
+  .card .meta p{color:var(--muted);font-size:14px}
+  @media(max-width:880px){.grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+
+  .empty{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted)}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(5,8,15,.86);backdrop-filter:blur(8px)}
+  .lb.open{display:flex}
+  .lb .box{width:100%;max-width:920px}
+  .lb .frame{position:relative;aspect-ratio:16/9;background:#000;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .lb .frame iframe,.lb .frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .lb .cap{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:16px}
+  .lb .cap h3{font-size:20px}
+  .lb .x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 14px;cursor:pointer;font:700 13px/1 var(--body)}
+
+  footer{padding:36px 0;border-top:1px solid var(--line)}
+  .foot{color:var(--faint);font-size:12.5px;text-align:center;max-width:80ch;margin:0 auto;line-height:1.7}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.3" y="1.3" width="27.4" height="27.4" rx="8.5" stroke="url(#lg)" stroke-width="1.4"/><path d="M6 20.5L12 15.5L17 18L24 8" stroke="url(#lg)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="8" r="2.3" fill="#e6c680"/><defs><linearGradient id="lg" x1="2" y1="28" x2="28" y2="2" gradientUnits="userSpaceOnUse"><stop stop-color="#b98d3e"/><stop offset="1" stop-color="#e6c680"/></linearGradient></defs></svg></span>MyTradingBot</a>
+    <div class="nav-right">
+      <a href="/" class="btn btn-ghost"><span data-nl>Terug naar home</span><span data-en>Back to home</span></a>
+      <div class="lang" role="group" aria-label="Taal / Language">
+        <button id="btn-nl" class="on" onclick="setLang('nl')"><span class="flag flag-nl"></span>NL</button>
+        <button id="btn-en" onclick="setLang('en')"><span class="flag flag-gb"></span>EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="eyebrow"><span data-nl>Radicale transparantie</span><span data-en>Radical transparency</span></span>
+    <h1><span data-nl>Elke trade. Op video.</span><span data-en>Every trade. On video.</span></h1>
+    <p><span data-nl>Geen cherry-picking, geen gefilterde hoogtepunten. Elke trade die ik neem wordt opgenomen en hier gepost — winst, verlies én de saaie no-trades. Het proces telt, niet de highlight.</span><span data-en>No cherry-picking, no filtered highlights. Every trade I take is recorded and posted here — win, loss and the boring no-trades. The process counts, not the highlight.</span></p>
+    <div class="stats">
+      <div class="stat"><b id="s-total">0</b><span data-nl>Trades op video</span><span data-en>Trades on video</span></div>
+      <div class="stat"><b id="s-win">0</b><span data-nl>Winst</span><span data-en>Wins</span></div>
+      <div class="stat"><b id="s-loss">0</b><span data-nl>Verlies</span><span data-en>Losses</span></div>
+      <div class="stat"><b id="s-nt">0</b><span data-nl>No-trades</span><span data-en>No-trades</span></div>
+    </div>
+  </section>
+
+  <div class="filters">
+    <button class="on" data-f="all"><span data-nl>Alles</span><span data-en>All</span></button>
+    <button data-f="win"><span data-nl>Winst</span><span data-en>Wins</span></button>
+    <button data-f="loss"><span data-nl>Verlies</span><span data-en>Losses</span></button>
+    <button data-f="notrade"><span data-nl>No-trade</span><span data-en>No-trade</span></button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<div class="lb" id="lb">
+  <div class="box">
+    <div class="frame" id="lb-frame"></div>
+    <div class="cap"><h3 id="lb-title"></h3><button class="x" onclick="closeLB()"><span data-nl>Sluiten</span><span data-en>Close</span></button></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="foot"><span data-nl class="foot-nl">MyTradingBot is een voorspel- en analysetool. Geen beleggingsadvies, geen garantie op rendement. De getoonde trades zijn illustratief en geen belofte van toekomstige resultaten. 18+ · speel met mate.</span><span data-en>MyTradingBot is a prediction and analysis tool. Not investment advice, no guarantee of returns. The trades shown are illustrative and no promise of future results. 18+ · play responsibly.</span></p>
+  </div>
+</footer>
+
+<script>
+  /* ===========================================================
+     TRADE-VIDEO'S TOEVOEGEN — zo makkelijk als een regel erbij.
+     Voeg een object toe bovenaan de lijst. Velden:
+       title_nl / title_en : titel
+       date   : "2026-07-20"
+       result : "win" | "loss" | "notrade"
+       note_nl / note_en : korte omschrijving
+       youtube: YouTube video-ID  (bijv. "dQw4w9WgXcQ")   OF
+       mp4    : pad naar mp4 (bijv. "trades/trade-001.mp4")
+       thumb  : (optioneel) pad naar thumbnail-afbeelding
+     Laat de lijst leeg-ish met result:"soon" voor "binnenkort".
+     =========================================================== */
+  var TRADES = [
+    { result:"soon", title_nl:"Eerste trade — live opname", title_en:"First trade — live recording", note_nl:"Volledige uitleg: kaart, poort-check, uitvoering.", note_en:"Full walkthrough: chart, gate check, execution." },
+    { result:"soon", title_nl:"No-trade dag — waarom ik wachtte", title_en:"No-trade day — why I waited", note_nl:"Ook niet-handelen is een beslissing die telt.", note_en:"Not trading is a decision that counts too." },
+    { result:"soon", title_nl:"Een verlies — eerlijk gejournald", title_en:"A loss — journaled honestly", note_nl:"Het proces beoordelen, niet alleen de uitkomst.", note_en:"Grading the process, not just the outcome." }
+  ];
+
+  function setLang(l){
+    document.documentElement.lang=l;
+    document.getElementById('btn-nl').classList.toggle('on',l==='nl');
+    document.getElementById('btn-en').classList.toggle('on',l==='en');
+    try{localStorage.setItem('mtb.lang',l);}catch(e){}
+  }
+  (function(){var s='nl';try{s=localStorage.getItem('mtb.lang')||(navigator.language||'nl').slice(0,2);}catch(e){}setLang(s==='en'?'en':'nl');})();
+
+  var tagLabel={win:{nl:"Winst",en:"Win"},loss:{nl:"Verlies",en:"Loss"},notrade:{nl:"No-trade",en:"No-trade"},soon:{nl:"Binnenkort",en:"Soon"}};
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  function render(filter){
+    var grid=document.getElementById('grid'); grid.innerHTML='';
+    var list=TRADES.filter(function(t){return filter==='all'||t.result===filter;});
+    if(!list.length){ grid.innerHTML='<div class="empty"><span data-nl>Nog geen trades in deze categorie.</span><span data-en>No trades in this category yet.</span></div>'; setLang(document.documentElement.lang); return; }
+    list.forEach(function(t,i){
+      var soon=t.result==='soon';
+      var card=document.createElement('div');
+      card.className='card'+(soon?' soon':'');
+      var thumb = t.thumb ? '<img src="'+esc(t.thumb)+'" alt="">' : '';
+      card.innerHTML=
+        '<div class="thumb">'+thumb+'<span class="tag '+t.result+'">'+
+          '<span data-nl>'+tagLabel[t.result].nl+'</span><span data-en>'+tagLabel[t.result].en+'</span></span>'+
+          (soon?'':'<div class="play"></div>')+'</div>'+
+        '<div class="meta">'+
+          (t.date?'<div class="date">'+esc(t.date)+'</div>':'')+
+          '<h3><span data-nl>'+esc(t.title_nl)+'</span><span data-en>'+esc(t.title_en)+'</span></h3>'+
+          '<p><span data-nl>'+esc(t.note_nl)+'</span><span data-en>'+esc(t.note_en)+'</span></p>'+
+        '</div>';
+      if(!soon){ card.addEventListener('click',function(){ openLB(t); }); }
+      grid.appendChild(card);
+    });
+    setLang(document.documentElement.lang);
+  }
+
+  function openLB(t){
+    var f=document.getElementById('lb-frame');
+    if(t.youtube){ f.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(t.youtube)+'?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen></iframe>'; }
+    else if(t.mp4){ f.innerHTML='<video src="'+esc(t.mp4)+'" controls autoplay playsinline></video>'; }
+    else { f.innerHTML=''; }
+    document.getElementById('lb-title').textContent = document.documentElement.lang==='en'? (t.title_en||'') : (t.title_nl||'');
+    document.getElementById('lb').classList.add('open');
+  }
+  function closeLB(){ document.getElementById('lb').classList.remove('open'); document.getElementById('lb-frame').innerHTML=''; }
+  document.getElementById('lb').addEventListener('click',function(e){ if(e.target===this) closeLB(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLB(); });
+
+  // stats
+  (function(){
+    var real=TRADES.filter(function(t){return t.result!=='soon';});
+    document.getElementById('s-total').textContent=real.length;
+    document.getElementById('s-win').textContent=real.filter(function(t){return t.result==='win';}).length;
+    document.getElementById('s-loss').textContent=real.filter(function(t){return t.result==='loss';}).length;
+    document.getElementById('s-nt').textContent=real.filter(function(t){return t.result==='notrade';}).length;
+  })();
+
+  // filters
+  document.querySelectorAll('.filters button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.filters button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); render(b.dataset.f);
+    });
+  });
+
+  render('all');
+</script>
+</body>
+</html>
