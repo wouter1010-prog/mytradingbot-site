@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MyTradingBot — Elke trade op video</title>
-<meta name="description" content="Radicale transparantie: elke trade opgenomen en gepost — winst, verlies en no-trade. Geen cherry-picking.">
+<meta name="description" content="Radicale transparantie: elke trade die ik neem opgenomen en gepost — winst én verlies. Geen cherry-picking.">
 <meta name="theme-color" content="#0a0f1c">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -111,12 +111,11 @@
   <section class="hero">
     <span class="eyebrow"><span data-nl>Radicale transparantie</span><span data-en>Radical transparency</span></span>
     <h1><span data-nl>Elke trade. Op video.</span><span data-en>Every trade. On video.</span></h1>
-    <p><span data-nl>Geen cherry-picking, geen gefilterde hoogtepunten. Elke trade die ik neem wordt opgenomen en hier gepost — winst, verlies én de saaie no-trades. Het proces telt, niet de highlight.</span><span data-en>No cherry-picking, no filtered highlights. Every trade I take is recorded and posted here — win, loss and the boring no-trades. The process counts, not the highlight.</span></p>
+    <p><span data-nl>Geen cherry-picking, geen gefilterde hoogtepunten. Elke keer dat ik een trade neem, film ik 'm en post ik 'm hier — winst én verlies. Het proces telt, niet de highlight.</span><span data-en>No cherry-picking, no filtered highlights. Every time I take a trade, I record it and post it here — win and loss. The process counts, not the highlight.</span></p>
     <div class="stats">
       <div class="stat"><b id="s-total">0</b><span data-nl>Trades op video</span><span data-en>Trades on video</span></div>
       <div class="stat"><b id="s-win">0</b><span data-nl>Winst</span><span data-en>Wins</span></div>
       <div class="stat"><b id="s-loss">0</b><span data-nl>Verlies</span><span data-en>Losses</span></div>
-      <div class="stat"><b id="s-nt">0</b><span data-nl>No-trades</span><span data-en>No-trades</span></div>
     </div>
   </section>
 
@@ -124,7 +123,6 @@
     <button class="on" data-f="all"><span data-nl>Alles</span><span data-en>All</span></button>
     <button data-f="win"><span data-nl>Winst</span><span data-en>Wins</span></button>
     <button data-f="loss"><span data-nl>Verlies</span><span data-en>Losses</span></button>
-    <button data-f="notrade"><span data-nl>No-trade</span><span data-en>No-trade</span></button>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -157,9 +155,9 @@
      Laat de lijst leeg-ish met result:"soon" voor "binnenkort".
      =========================================================== */
   var TRADES = [
-    { result:"soon", title_nl:"Eerste trade — live opname", title_en:"First trade — live recording", note_nl:"Volledige uitleg: kaart, poort-check, uitvoering.", note_en:"Full walkthrough: chart, gate check, execution." },
-    { result:"soon", title_nl:"No-trade dag — waarom ik wachtte", title_en:"No-trade day — why I waited", note_nl:"Ook niet-handelen is een beslissing die telt.", note_en:"Not trading is a decision that counts too." },
-    { result:"soon", title_nl:"Een verlies — eerlijk gejournald", title_en:"A loss — journaled honestly", note_nl:"Het proces beoordelen, niet alleen de uitkomst.", note_en:"Grading the process, not just the outcome." }
+    { result:"soon", title_nl:"Een trade van kaart tot exit", title_en:"A trade from chart to exit", note_nl:"Volledige opname: kaart, poort-check, uitvoering, resultaat.", note_en:"Full recording: chart, gate check, execution, result." },
+    { result:"soon", title_nl:"Een verlies — eerlijk gejournald", title_en:"A loss — journaled honestly", note_nl:"Het proces beoordelen, niet alleen de uitkomst.", note_en:"Grading the process, not just the outcome." },
+    { result:"soon", title_nl:"Coach-feedback ná de trade", title_en:"Coach feedback after the trade", note_nl:"Volgde ik mijn regels? Waar week ik af?", note_en:"Did I follow my rules? Where did I deviate?" }
   ];
 
   function setLang(l){
@@ -215,7 +213,6 @@
     document.getElementById('s-total').textContent=real.length;
     document.getElementById('s-win').textContent=real.filter(function(t){return t.result==='win';}).length;
     document.getElementById('s-loss').textContent=real.filter(function(t){return t.result==='loss';}).length;
-    document.getElementById('s-nt').textContent=real.filter(function(t){return t.result==='notrade';}).length;
   })();
 
   // filters
