@@ -12,6 +12,10 @@ def home():
 def login():
     return send_from_directory(ROOT, "login.html")
 
+@app.route("/start")
+def start():
+    return send_from_directory(ROOT, "getting-started.html")
+
 @app.route("/<path:path>")
 def assets(path):
     return send_from_directory(ROOT, path)
