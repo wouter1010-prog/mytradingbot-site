@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MyTradingBot — Open jouw cockpit</title>
+<meta name="theme-color" content="#0a0f1c">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0a0f1c;--panel:#111a2e;--line:rgba(210,180,120,.16);--gold:#d9a94e;--gold-soft:#e6c680;--ink:#f4f0e6;--muted:#9aa6bd;--faint:#5f6b82;--green:#4ecb8f;--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:var(--navy);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:24px}
+  [data-en]{display:none}
+  html[lang="en"] [data-nl]{display:none}
+  html[lang="en"] [data-en]{display:inline}
+
+  .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(130% 100% at 68% -10%,#132038,#0b1120 42%,#070b14)}
+  .bg video{width:100%;height:100%;object-fit:cover}
+  .bg::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(78% 78% at 50% 48%,rgba(7,11,20,.22),rgba(7,11,20,.46) 72%,rgba(7,11,20,.64)),
+    linear-gradient(180deg,rgba(10,15,28,.12),rgba(10,15,28,.3))}
+
+  .lang{position:fixed;top:20px;right:22px;z-index:10;display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(10,15,28,.6);backdrop-filter:blur(10px)}
+  .lang button{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--muted);font:700 12px/1 var(--body);letter-spacing:.06em;padding:9px 11px;cursor:pointer;transition:.2s}
+  .lang button.on{background:rgba(217,169,78,.16);color:var(--ink)}
+  .flag{width:19px;height:13px;border-radius:2px;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+  .flag-nl{background:linear-gradient(180deg,#ae1c28 0 33.3%,#fff 33.3% 66.6%,#21468b 66.6% 100%)}
+  .flag-gb{background:linear-gradient(180deg,transparent 40%,#c8102e 40% 60%,transparent 60%),linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(45deg,transparent 46%,#fff 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,#fff 46% 54%,transparent 54%),#012169}
+
+  .card{position:relative;z-index:5;width:100%;max-width:474px;background:linear-gradient(180deg,rgba(22,31,52,.74),rgba(11,17,30,.74));backdrop-filter:blur(26px);border:1px solid var(--line);border-radius:26px;padding:54px 50px 42px;box-shadow:0 40px 100px rgba(0,0,0,.55),0 0 0 1px rgba(217,169,78,.06),inset 0 1px 0 rgba(255,255,255,.06)}
+  .card::before{content:"";position:absolute;top:0;left:30px;right:30px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.65),transparent)}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:500;font-size:22px;letter-spacing:-.005em;justify-content:center}
+  .brand svg{display:block;filter:drop-shadow(0 0 10px rgba(217,169,78,.4))}
+  .eyebrow{text-align:center;font:700 11px/1 var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-top:24px}
+  h1{font-family:var(--display);font-weight:500;font-size:33px;text-align:center;margin:14px 0 7px;letter-spacing:-.015em}
+  .sub{text-align:center;color:var(--muted);font-size:15px;margin-bottom:30px;line-height:1.55}
+  label{display:block;font:600 13px/1 var(--body);color:var(--muted);letter-spacing:.02em;margin:0 0 9px 2px}
+  .field{margin-bottom:20px}
+  .input-wrap{position:relative}
+  input{width:100%;background:rgba(7,11,20,.55);border:1px solid var(--line);border-radius:13px;color:var(--ink);font:600 16px/1 var(--body);letter-spacing:.08em;padding:17px 58px 17px 17px;transition:border .2s,box-shadow .2s}
+  input::placeholder{color:var(--faint);letter-spacing:.08em}
+  input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,169,78,.14)}
+  .toggle{position:absolute;top:50%;right:8px;transform:translateY(-50%);background:none;border:0;color:var(--muted);font:600 12px/1 var(--body);letter-spacing:.04em;padding:9px 11px;border-radius:9px;cursor:pointer;transition:.2s}
+  .toggle:hover{color:var(--ink);background:rgba(217,169,78,.1)}
+  .btn{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 16px/1 var(--body);letter-spacing:.02em;padding:18px;border-radius:13px;border:0;cursor:pointer;color:#20160a;background:linear-gradient(180deg,var(--gold-soft),var(--gold));box-shadow:0 12px 34px rgba(217,169,78,.3);transition:transform .2s,box-shadow .2s;margin-top:4px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 16px 42px rgba(217,169,78,.4)}
+  .btn[disabled]{opacity:.6;cursor:wait;transform:none;box-shadow:0 12px 34px rgba(217,169,78,.2)}
+  .status{text-align:center;font:600 13.5px/1.5 var(--body);margin-top:16px;min-height:20px;transition:.2s}
+  .status.ok{color:var(--green)}
+  .status.err{color:#e6867a}
+  .status.busy{color:var(--muted)}
+  .alt{text-align:center;color:var(--muted);font-size:14px;margin-top:22px}
+  .alt a,.alt button{color:var(--gold);text-decoration:none;font-weight:600;background:none;border:0;font-family:var(--body);font-size:14px;cursor:pointer;padding:0}
+  .alt a:hover,.alt button:hover{text-decoration:underline}
+  .note{text-align:center;color:var(--faint);font-size:11.5px;margin-top:26px;line-height:1.6}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <video autoplay muted loop playsinline poster="mtb-hero-poster.jpg"><source src="mtb-hero.mp4" type="video/mp4"></video>
+  </div>
+
+  <div class="lang" role="group" aria-label="Taal / Language">
+    <button id="btn-nl" class="on" onclick="setLang('nl')"><span class="flag flag-nl"></span>NL</button>
+    <button id="btn-en" onclick="setLang('en')"><span class="flag flag-gb"></span>EN</button>
+  </div>
+
+  <main class="card">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.3" y="1.3" width="27.4" height="27.4" rx="8.5" stroke="url(#lg)" stroke-width="1.4"/><path d="M6 20.5L12 15.5L17 18L24 8" stroke="url(#lg)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="8" r="2.3" fill="#e6c680"/><defs><linearGradient id="lg" x1="2" y1="28" x2="28" y2="2" gradientUnits="userSpaceOnUse"><stop stop-color="#b98d3e"/><stop offset="1" stop-color="#e6c680"/></linearGradient></defs></svg></span>MyTradingBot
+    </div>
+
+    <div class="eyebrow"><span data-nl>Private bèta · geïsoleerde werkruimte</span><span data-en>Private beta · isolated workspace</span></div>
+    <h1><span data-nl>Open jouw cockpit</span><span data-en>Open your cockpit</span></h1>
+    <p class="sub"><span data-nl>Open de cockpit via de extensie of gebruik je persoonlijke beta-token. Iedere tester heeft een geïsoleerde werkruimte.</span><span data-en>Open the cockpit via the extension or use your personal beta token. Every tester has an isolated workspace.</span></p>
+
+    <form onsubmit="return demoTest(event)" autocomplete="off">
+      <div class="field">
+        <label for="apiToken"><span data-nl>API-token</span><span data-en>API token</span></label>
+        <div class="input-wrap">
+          <input id="apiToken" type="password" inputmode="text" autocomplete="off" spellcheck="false" placeholder="••••••••••••••••" required autofocus>
+          <button type="button" class="toggle" id="toggleToken" aria-pressed="false" onclick="toggleToken()"><span data-nl>Tonen</span><span data-en>Show</span></button>
+        </div>
+      </div>
+      <button class="btn" type="submit" id="testConnection"><span data-nl>Verbinding testen</span><span data-en>Test connection</span></button>
+    </form>
+
+    <p class="status" id="connStatus" role="status" aria-live="polite"></p>
+
+    <!--
+      ============================================================
+      KOPPELPUNT VOOR DE BRAIN — Koppel hier je bestaande
+      brain-handler aan #testConnection (click) en #apiToken (value).
+      Verwijder de demo-handler niet-brekend.
+      ------------------------------------------------------------
+      Voorbeeld:
+        document.getElementById('testConnection').addEventListener('click', async (e) => {
+          e.preventDefault();
+          const token = document.getElementById('apiToken').value.trim();
+          // ... jouw bestaande token-test tegen beta.mytradingbot.ai ...
+        });
+      De demo-handler hieronder (demoTest) doet GEEN echte call en
+      breekt niets; overschrijf of verwijder hem wanneer je koppelt.
+      ============================================================
+    -->
+
+    <p class="alt">
+      <span data-nl>Liever geen token plakken? </span><span data-en>Rather not paste a token? </span>
+      <button type="button" id="openViaExtension" onclick="openViaExtension()"><span data-nl>Openen via de extensie</span><span data-en>Open via the extension</span></button>
+    </p>
+
+    <p class="note">
+      <span data-nl>Read-only · oefenmodus · jij houdt de eindklik. De software plaatst nooit zelf een order.</span>
+      <span data-en>Read-only · practice mode · you keep the final click. The software never places an order itself.</span>
+    </p>
+  </main>
+
+<script>
+  function setLang(l){
+    document.documentElement.lang=l;
+    document.getElementById('btn-nl').classList.toggle('on',l==='nl');
+    document.getElementById('btn-en').classList.toggle('on',l==='en');
+    try{localStorage.setItem('mtb.lang',l);}catch(e){}
+  }
+  (function(){var s='nl';try{s=localStorage.getItem('mtb.lang')||(navigator.language||'nl').slice(0,2);}catch(e){}setLang(s==='en'?'en':'nl');
+    var v=document.querySelector('.bg video');if(v){var r=0.7;v.playbackRate=r;['loadedmetadata','play','canplay'].forEach(function(e){v.addEventListener(e,function(){v.playbackRate=r;});});}
+  })();
+
+  // Token tonen / verbergen.
+  function toggleToken(){
+    var inp=document.getElementById('apiToken');
+    var btn=document.getElementById('toggleToken');
+    var show=inp.type==='password';
+    inp.type=show?'text':'password';
+    btn.setAttribute('aria-pressed',show?'true':'false');
+    btn.querySelector('[data-nl]').textContent=show?'Verbergen':'Tonen';
+    btn.querySelector('[data-en]').textContent=show?'Hide':'Show';
+  }
+
+  // Secundaire optie: openen via de extensie (placeholder — koppel aan je flow).
+  function openViaExtension(){
+    var nl=document.documentElement.lang!=='en';
+    setStatus('busy', nl?'Extensie openen…':'Opening extension…');
+    // Koppel hier je bestaande extensie-flow (bv. postMessage naar de extensie).
+  }
+
+  function setStatus(kind,msg){
+    var el=document.getElementById('connStatus');
+    el.className='status '+kind; el.textContent=msg;
+  }
+
+  // ---- DEMO-HANDLER (niet-brekend) ---------------------------------
+  // Doet GEEN echte verbinding. Toont alleen visuele feedback zodat het
+  // template zelfstandig te reviewen is. Vervang door je brain-handler.
+  function demoTest(e){
+    e.preventDefault();
+    var nl=document.documentElement.lang!=='en';
+    var token=document.getElementById('apiToken').value.trim();
+    var btn=document.getElementById('testConnection');
+    if(!token){ setStatus('err', nl?'Vul eerst je API-token in.':'Enter your API token first.'); return false; }
+    btn.disabled=true;
+    setStatus('busy', nl?'Verbinding testen…':'Testing connection…');
+    setTimeout(function(){
+      btn.disabled=false;
+      setStatus('ok', nl?'Demo · geen echte test. Koppel hier je brain-handler.':'Demo · no real test. Connect your brain handler here.');
+    }, 900);
+    return false;
+  }
+  // ------------------------------------------------------------------
+</script>
+</body>
+</html>
