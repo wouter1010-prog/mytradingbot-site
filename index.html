@@ -159,6 +159,20 @@
   .bigguarantee h3{font-size:clamp(24px,4vw,36px);max-width:24ch;margin:0 auto;line-height:1.15}
   .bigguarantee h3 em{font-style:italic;color:var(--gold)}
   .bigguarantee p{color:var(--muted);margin:16px auto 0;max-width:52ch;font-size:16px}
+  /* refined "included" note — calm, no glow, one hairline accent */
+  .include{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:36px 40px;position:relative;overflow:hidden}
+  .include::before{content:"";position:absolute;top:0;left:40px;right:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.45),transparent)}
+  .include .eyebrow{margin-bottom:10px}
+  .include h3{font-size:clamp(21px,3vw,27px);max-width:28ch;line-height:1.15}
+  .include p{color:var(--muted);font-size:16px;margin-top:12px;max-width:66ch}
+  /* coach post-trade example — restrained panel */
+  .coachnote{margin-top:30px;max-width:720px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px 28px}
+  .coachnote .who{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+  .coachnote .av{flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:radial-gradient(120% 120% at 30% 20%,#182742,#0b1322);border:1px solid rgba(217,169,78,.4);display:grid;place-items:center;color:var(--gold);font-family:var(--display);font-size:16px}
+  .coachnote .who b{font-family:var(--display);font-weight:500;font-size:15px}
+  .coachnote .who span{color:var(--faint);font-size:12px}
+  .coachnote q{quotes:none;color:var(--ink);font-size:16px;line-height:1.65;font-style:italic;display:block}
+  .coachnote q b{color:var(--gold-soft);font-style:normal}
 
   /* ---------- AUDIENCE ---------- */
   .aud{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:52px}
@@ -180,8 +194,7 @@
   .band h2{font-size:clamp(30px,5vw,54px);max-width:20ch;margin:18px auto 0}
   .band p{color:var(--muted);max-width:50ch;margin:20px auto 0;font-size:17px}
   .seats{display:inline-flex;align-items:center;gap:9px;margin-top:22px;font:600 13px/1 var(--body);color:var(--gold-soft);background:rgba(217,169,78,.08);border:1px solid rgba(217,169,78,.25);padding:10px 16px;border-radius:20px}
-  .seats .pulse{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .seats .pulse{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(217,169,78,.55)}
   .band .btn{margin-top:24px}
   .band small{display:block;margin-top:18px;color:var(--faint);font-size:13px}
 
@@ -366,15 +379,12 @@
         <div class="feat reveal"><div class="ic">↺</div><h3><span data-nl>Feedback ná élke trade</span><span data-en>Feedback after every trade</span></h3><p><span data-nl>Zodra een trade dicht is, krijg je een eerlijke procesbeoordeling: volgde je je regels, waar week je af, wat kun je eruit leren — gekoppeld aan je eigen data, niet aan holle adviezen.</span><span data-en>The moment a trade closes, you get an honest process review: did you follow your rules, where did you deviate, what can you learn — tied to your own data, not to hollow advice.</span></p></div>
         <div class="feat reveal"><div class="ic">✳</div><h3><span data-nl>Vraag maar raak — dag en nacht</span><span data-en>Ask anything — day and night</span></h3><p><span data-nl>Snap je een concept niet, of wil je weten waarom een poort blokkeerde? Vraag het gewoon. De coach legt alles uit in gewone taal — begrijpelijk of je nu net begint of al jaren handelt.</span><span data-en>Don't get a concept, or want to know why a gate blocked? Just ask. The coach explains everything in plain language — clear whether you're just starting or have traded for years.</span></p></div>
       </div>
-      <div class="reveal" style="margin-top:26px;max-width:760px;background:linear-gradient(180deg,rgba(22,31,52,.6),rgba(12,18,32,.6));border:1px solid var(--line);border-radius:18px;padding:24px 26px">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <span style="flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:radial-gradient(120% 120% at 30% 20%,#182742,#0b1322);border:1px solid rgba(217,169,78,.45);display:grid;place-items:center;color:var(--gold);font-family:var(--display);font-size:17px">✦</span>
-          <div style="line-height:1.3"><b style="font-family:var(--display);font-weight:500;font-size:15px">De coach · <span data-nl>na je trade</span><span data-en>after your trade</span></b><br><span style="color:var(--faint);font-size:12px">BTC · Long · −0,4R</span></div>
+      <div class="coachnote reveal">
+        <div class="who">
+          <span class="av">✦</span>
+          <div><b>De coach · <span data-nl>na je trade</span><span data-en>after your trade</span></b><br><span>BTC · Long · −0,4R</span></div>
         </div>
-        <p style="color:var(--ink);font-size:16px;line-height:1.65;font-style:italic">
-          <span data-nl>“Nette uitvoering. Je wachtte op de reactie op je 4H-zone in plaats van te anticiperen — precies zoals je methode voorschrijft. Eén ding: je stop lag op de voor de hand liggende plek, net waar gisteren je uitstop óók zat. Zet 'm volgende keer er nét voorbij. <b style="color:var(--gold-soft);font-style:normal">Procescijfer: 8/10</b> — verlies of niet, dit was een góéde trade.”</span>
-          <span data-en>“Clean execution. You waited for the reaction at your 4H zone instead of anticipating — exactly as your method prescribes. One thing: your stop sat at the obvious spot, right where yesterday's stop-out was too. Next time, put it just beyond. <b style="color:var(--gold-soft);font-style:normal">Process grade: 8/10</b> — loss or not, this was a good trade.”</span>
-        </p>
+        <q><span data-nl>“Nette uitvoering. Je wachtte op de reactie op je 4H-zone in plaats van te anticiperen — precies zoals je methode voorschrijft. Eén ding: je stop lag op de voor de hand liggende plek, net waar gisteren je uitstop óók zat. Zet 'm volgende keer er nét voorbij. <b>Procescijfer: 8/10</b> — verlies of niet, dit was een góéde trade.”</span><span data-en>“Clean execution. You waited for the reaction at your 4H zone instead of anticipating — exactly as your method prescribes. One thing: your stop sat at the obvious spot, right where yesterday's stop-out was too. Next time, put it just beyond. <b>Process grade: 8/10</b> — loss or not, this was a good trade.”</span></q>
       </div>
     </div>
   </section>
@@ -382,13 +392,10 @@
   <!-- BASISCURSUS -->
   <section style="padding-top:0">
     <div class="wrap">
-      <div class="bigguarantee reveal" style="text-align:left;margin-top:0;display:flex;gap:28px;align-items:center;justify-content:space-between;flex-wrap:wrap">
-        <div style="max-width:60ch">
-          <span class="eyebrow"><span data-nl>Basiscursus inbegrepen</span><span data-en>Basic course included</span></span>
-          <h3 style="font-size:clamp(22px,3.4vw,30px);margin:12px 0 0;text-align:left"><span data-nl>Nog nooit naakte prijsactie gelezen? Geen probleem.</span><span data-en>Never read naked price action before? No problem.</span></h3>
-          <p style="margin:14px 0 0;text-align:left"><span data-nl>Bij de bèta zit een basiscursus die je de fundamenten stap voor stap leert — discipline, naakte prijsactie, journalen en het lezen van je cockpit. In gewone taal, zodat je zelfs als complete beginner meteen kunt starten.</span><span data-en>The beta includes a basic course that teaches you the fundamentals step by step — discipline, naked price action, journaling and reading your cockpit. In plain language, so you can start right away even as a complete beginner.</span></p>
-        </div>
-        <a href="#" class="btn btn-primary reveal" onclick="openWait(event)" style="flex:0 0 auto"><span data-nl>Op de wachtlijst →</span><span data-en>Join the waitlist →</span></a>
+      <div class="include reveal">
+        <span class="eyebrow"><span data-nl>Basiscursus inbegrepen</span><span data-en>Basic course included</span></span>
+        <h3><span data-nl>Nog nooit naakte prijsactie gelezen? Geen probleem.</span><span data-en>Never read naked price action before? No problem.</span></h3>
+        <p><span data-nl>Bij de bèta zit een basiscursus die je de fundamenten stap voor stap leert — discipline, naakte prijsactie, journalen en het lezen van je cockpit. In gewone taal, zodat je zelfs als complete beginner meteen kunt starten.</span><span data-en>The beta includes a basic course that teaches you the fundamentals step by step — discipline, naked price action, journaling and reading your cockpit. In plain language, so you can start right away even as a complete beginner.</span></p>
       </div>
     </div>
   </section>
