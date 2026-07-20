@@ -94,7 +94,9 @@
 
   /* ---------- FOUNDER ---------- */
   .founder{background:linear-gradient(180deg,var(--navy),var(--navy-2))}
-  .founder .grid{display:grid;grid-template-columns:300px 1fr;gap:52px;align-items:start;margin-top:14px}
+  .founder{padding-top:110px;padding-bottom:110px}
+  .founder .grid{display:grid;grid-template-columns:300px 1fr;gap:60px;align-items:center;margin-top:44px}
+  .founder .story{padding-top:6px}
   .portrait{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;border:1px solid var(--line);background:radial-gradient(120% 120% at 30% 10%,#182742,#0c1322);box-shadow:0 30px 70px rgba(0,0,0,.45)}
   .portrait img{width:100%;height:100%;object-fit:cover;display:block}
   .portrait .ph{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(120% 120% at 30% 12%,#182742,#0b1322)}
@@ -160,8 +162,8 @@
   .bigguarantee h3 em{font-style:italic;color:var(--gold)}
   .bigguarantee p{color:var(--muted);margin:16px auto 0;max-width:52ch;font-size:16px}
   /* refined "included" note — calm, no glow, one hairline accent */
-  .include{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:36px 40px;position:relative;overflow:hidden}
-  .include::before{content:"";position:absolute;top:0;left:40px;right:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.45),transparent)}
+  .include{background:radial-gradient(90% 170% at 50% 0%,rgba(217,169,78,.14),transparent 62%),var(--navy-2);border:1px solid rgba(217,169,78,.3);border-radius:20px;padding:44px 46px;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(217,169,78,.08)}
+  .include::before{content:"";position:absolute;top:0;left:44px;right:44px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.6),transparent)}
   .include .eyebrow{margin-bottom:10px}
   .include h3{font-size:clamp(21px,3vw,27px);max-width:28ch;line-height:1.15}
   .include p{color:var(--muted);font-size:16px;margin-top:12px;max-width:66ch}
@@ -495,7 +497,7 @@
       <span class="eyebrow reveal"><span data-nl>Private bèta · op uitnodiging</span><span data-en>Private beta · invite-only</span></span>
       <h2 class="reveal"><span data-nl>Klaar om te handelen met een systeem in plaats van je onderbuik?</span><span data-en>Ready to trade with a system instead of your gut?</span></h2>
       <p class="reveal"><span data-nl>De bèta draait op uitnodiging, in oefenmodus. Zet je op de wachtlijst en je krijgt als eerste een eenmalige code — jouw geïsoleerde werkruimte, geen risico, geen echt geld.</span><span data-en>The beta runs invite-only, in practice mode. Join the waitlist and be first to get a one-time code — your isolated workspace, no risk, no real money.</span></p>
-      <div class="seats reveal"><span class="pulse"></span><span data-nl>De eerste 50 plekken · beperkt en persoonlijk begeleid</span><span data-en>The first 50 seats · limited and personally onboarded</span></div>
+      <div class="seats reveal"><span class="pulse"></span><span data-nl>De eerste 50 plekken · op uitnodiging · in oefenmodus</span><span data-en>The first 50 seats · invite-only · in practice mode</span></div>
       <br>
       <a href="#" class="btn btn-primary reveal" onclick="openWait(event)"><span data-nl>Zet me op de wachtlijst →</span><span data-en>Put me on the waitlist →</span></a>
       <small class="reveal"><span data-nl>18+ · Speel met mate · Voorspel-/analysetool, geen winstgarantie · Read-only, jij houdt altijd de eindklik.</span><span data-en>18+ · Play responsibly · Prediction/analysis tool, no profit guarantee · Read-only, you always keep the final click.</span></small>
