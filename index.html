@@ -162,11 +162,13 @@
   .bigguarantee h3 em{font-style:italic;color:var(--gold)}
   .bigguarantee p{color:var(--muted);margin:16px auto 0;max-width:52ch;font-size:16px}
   /* refined "included" note — calm, no glow, one hairline accent */
-  .include{background:radial-gradient(90% 170% at 50% 0%,rgba(217,169,78,.14),transparent 62%),var(--navy-2);border:1px solid rgba(217,169,78,.3);border-radius:20px;padding:44px 46px;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(217,169,78,.08)}
-  .include::before{content:"";position:absolute;top:0;left:44px;right:44px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.6),transparent)}
+  .include{background:radial-gradient(100% 180% at 50% 0%,rgba(217,169,78,.22),transparent 60%),linear-gradient(180deg,#141c30,#0c1322);border:1px solid rgba(217,169,78,.45);border-radius:22px;padding:48px 50px;position:relative;overflow:hidden;box-shadow:0 0 80px rgba(217,169,78,.16),inset 0 1px 0 rgba(255,255,255,.05)}
+  .include::before{content:"";position:absolute;top:0;left:44px;right:44px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.85),transparent)}
   .include .eyebrow{margin-bottom:10px}
-  .include h3{font-size:clamp(21px,3vw,27px);max-width:28ch;line-height:1.15}
+  .include h3{font-size:clamp(22px,3.2vw,30px);max-width:28ch;line-height:1.14}
   .include p{color:var(--muted);font-size:16px;margin-top:12px;max-width:66ch}
+  .include .pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .include .pills span{font:600 13px/1 var(--body);color:var(--gold-soft);background:rgba(217,169,78,.12);border:1px solid rgba(217,169,78,.3);padding:9px 14px;border-radius:20px}
   /* coach post-trade example — restrained panel */
   .coachnote{margin-top:30px;max-width:720px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px 28px}
   .coachnote .who{display:flex;align-items:center;gap:12px;margin-bottom:15px}
@@ -397,7 +399,13 @@
       <div class="include reveal">
         <span class="eyebrow"><span data-nl>Basiscursus inbegrepen</span><span data-en>Basic course included</span></span>
         <h3><span data-nl>Nog nooit naakte prijsactie gelezen? Geen probleem.</span><span data-en>Never read naked price action before? No problem.</span></h3>
-        <p><span data-nl>Bij de bèta zit een basiscursus die je de fundamenten stap voor stap leert — discipline, naakte prijsactie, journalen en het lezen van je cockpit. In gewone taal, zodat je zelfs als complete beginner meteen kunt starten.</span><span data-en>The beta includes a basic course that teaches you the fundamentals step by step — discipline, naked price action, journaling and reading your cockpit. In plain language, so you can start right away even as a complete beginner.</span></p>
+        <p><span data-nl>Bij de bèta zit een basiscursus die je de fundamenten stap voor stap leert. In gewone taal, zodat je zelfs als complete beginner meteen kunt starten.</span><span data-en>The beta includes a basic course that teaches you the fundamentals step by step. In plain language, so you can start right away even as a complete beginner.</span></p>
+        <div class="pills">
+          <span><span data-nl>Discipline</span><span data-en>Discipline</span></span>
+          <span><span data-nl>Naakte prijsactie lezen</span><span data-en>Reading naked price action</span></span>
+          <span><span data-nl>Journalen</span><span data-en>Journaling</span></span>
+          <span><span data-nl>Je cockpit lezen</span><span data-en>Reading your cockpit</span></span>
+        </div>
       </div>
     </div>
   </section>
