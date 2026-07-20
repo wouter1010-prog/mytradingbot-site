@@ -26,6 +26,12 @@ def trades():
     return send_from_directory(ROOT, "trades.html")
 
 
+@app.route("/cursus")
+@app.route("/course")
+def cursus():
+    return send_from_directory(ROOT, "cursus.html")
+
+
 @app.route("/waitlist", methods=["POST"])
 def waitlist():
     data = request.get_json(silent=True) or request.form.to_dict()

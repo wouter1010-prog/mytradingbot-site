@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MyTradingBot — Basiscursus</title>
+<meta name="description" content="De basiscursus: de fundamenten stap voor stap — discipline, naakte prijsactie, journalen en het lezen van je cockpit. In gewone taal.">
+<meta name="theme-color" content="#0a0f1c">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0a0f1c;--navy-2:#0e1526;--panel:#111a2e;--line:rgba(210,180,120,.14);--gold:#d9a94e;--gold-soft:#e6c680;--ink:#f4f0e6;--muted:#9aa6bd;--faint:#5f6b82;--green:#4ecb8f;--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--wrap:1000px;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--navy);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+  [data-en]{display:none}
+  html[lang="en"] [data-nl]{display:none}
+  html[lang="en"] [data-en]{display:inline}
+  .btn{display:inline-flex;align-items:center;gap:9px;font:700 14px/1 var(--body);letter-spacing:.02em;padding:14px 24px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .btn-primary{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#20160a;box-shadow:0 8px 30px rgba(217,169,78,.28)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(217,169,78,.4)}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
+  .btn-ghost:hover{border-color:var(--gold)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+  header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,15,28,.72);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:19px;letter-spacing:-.005em}
+  .brand .mark svg{display:block;filter:drop-shadow(0 0 9px rgba(217,169,78,.35))}
+  .nav-right{display:flex;gap:16px;align-items:center}
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.03)}
+  .lang button{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--muted);font:700 12px/1 var(--body);letter-spacing:.06em;padding:9px 11px;cursor:pointer}
+  .lang button.on{background:rgba(217,169,78,.16);color:var(--ink)}
+  .flag{width:19px;height:13px;border-radius:2px;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+  .flag-nl{background:linear-gradient(180deg,#ae1c28 0 33.3%,#fff 33.3% 66.6%,#21468b 66.6% 100%)}
+  .flag-gb{background:linear-gradient(180deg,transparent 40%,#c8102e 40% 60%,transparent 60%),linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(45deg,transparent 46%,#fff 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,#fff 46% 54%,transparent 54%),#012169}
+  @media(max-width:620px){.nav-right .btn-ghost{display:none}}
+
+  /* HERO with video */
+  .hero{position:relative;min-height:52vh;display:flex;align-items:center;overflow:hidden}
+  .hero-media{position:absolute;inset:0;z-index:0;background:radial-gradient(130% 100% at 68% -10%,#132038,#0b1120 42%,#070b14)}
+  .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .hero-media::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(90% 80% at 25% 45%,rgba(7,11,20,.72),rgba(7,11,20,.32) 42%,transparent 72%),linear-gradient(180deg,transparent 55%,rgba(10,15,28,.7) 88%,var(--navy) 100%)}
+  .hero-in{position:relative;z-index:1;padding:64px 0}
+  .eyebrow{font:700 11px/1 var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  .hero h1{font-size:clamp(34px,6vw,58px);margin:16px 0 0;max-width:18ch}
+  .hero p{color:var(--muted);font-size:clamp(16px,2vw,19px);max-width:56ch;margin:18px 0 0}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+
+  section{padding:70px 0}
+  .lead-note{background:radial-gradient(100% 180% at 50% 0%,rgba(217,169,78,.14),transparent 60%),var(--navy-2);border:1px solid rgba(217,169,78,.28);border-radius:18px;padding:24px 28px;display:flex;gap:16px;align-items:flex-start;box-shadow:0 0 50px rgba(217,169,78,.06)}
+  .lead-note .ic{color:var(--gold);font-size:20px}
+  .lead-note p{color:var(--ink);font-size:15.5px}
+  .lead-note b{color:var(--gold-soft)}
+
+  .curric{margin-top:40px;display:grid;gap:16px}
+  .lesson{display:flex;gap:20px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;transition:border-color .25s,transform .25s;cursor:pointer}
+  .lesson:hover{border-color:rgba(217,169,78,.4);transform:translateY(-2px)}
+  .lesson.locked{cursor:default;opacity:.72}
+  .lesson .n{flex:0 0 auto;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-family:var(--display);font-size:19px;color:var(--gold);background:linear-gradient(180deg,#16223c,#0b1120);border:1px solid rgba(217,169,78,.35)}
+  .lesson .body{flex:1}
+  .lesson h3{font-size:19px;margin-bottom:5px}
+  .lesson p{color:var(--muted);font-size:15px}
+  .lesson .right{flex:0 0 auto;display:flex;align-items:center;gap:12px;align-self:center}
+  .lesson .dur{color:var(--faint);font:600 12.5px/1 var(--body)}
+  .lesson .play{width:40px;height:40px;border-radius:50%;background:rgba(217,169,78,.14);border:1px solid rgba(217,169,78,.4);display:grid;place-items:center}
+  .lesson .play::after{content:"";border-left:12px solid var(--gold);border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+  .lesson .soon{font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);background:rgba(255,255,255,.05);border:1px solid var(--line);padding:7px 10px;border-radius:20px}
+  @media(max-width:620px){.lesson .right{display:none}}
+
+  .cta-band{text-align:center;margin-top:50px;padding:40px 24px;background:radial-gradient(90% 140% at 50% 0%,rgba(217,169,78,.12),transparent 60%),var(--navy-2);border:1px solid var(--line);border-radius:20px}
+  .cta-band h2{font-size:clamp(24px,4vw,34px);max-width:24ch;margin:0 auto}
+  .cta-band p{color:var(--muted);margin:14px auto 0;max-width:48ch;font-size:15.5px}
+  .cta-band .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(5,8,15,.86);backdrop-filter:blur(8px)}
+  .lb.open{display:flex}
+  .lb .box{width:100%;max-width:920px}
+  .lb .frame{position:relative;aspect-ratio:16/9;background:#000;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .lb .frame iframe,.lb .frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .lb .cap{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:16px}
+  .lb .cap h3{font-size:20px}
+  .lb .x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 14px;cursor:pointer;font:700 13px/1 var(--body)}
+
+  footer{padding:36px 0;border-top:1px solid var(--line)}
+  .foot{color:var(--faint);font-size:12.5px;text-align:center;max-width:80ch;margin:0 auto;line-height:1.7}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.3" y="1.3" width="27.4" height="27.4" rx="8.5" stroke="url(#lg)" stroke-width="1.4"/><path d="M6 20.5L12 15.5L17 18L24 8" stroke="url(#lg)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="8" r="2.3" fill="#e6c680"/><defs><linearGradient id="lg" x1="2" y1="28" x2="28" y2="2" gradientUnits="userSpaceOnUse"><stop stop-color="#b98d3e"/><stop offset="1" stop-color="#e6c680"/></linearGradient></defs></svg></span>MyTradingBot</a>
+    <div class="nav-right">
+      <a href="/start" class="btn btn-ghost"><span data-nl>Naar Getting Started</span><span data-en>To Getting Started</span></a>
+      <div class="lang" role="group" aria-label="Taal / Language">
+        <button id="btn-nl" class="on" onclick="setLang('nl')"><span class="flag flag-nl"></span>NL</button>
+        <button id="btn-en" onclick="setLang('en')"><span class="flag flag-gb"></span>EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-media" aria-hidden="true">
+    <video autoplay muted loop playsinline poster="mtb-hero-poster.jpg"><source src="mtb-hero.mp4" type="video/mp4"></video>
+  </div>
+  <div class="wrap hero-in">
+    <span class="eyebrow"><span data-nl>Basiscursus · inbegrepen bij de bèta</span><span data-en>Basic course · included with the beta</span></span>
+    <h1><span data-nl>De fundamenten, stap voor stap.</span><span data-en>The fundamentals, step by step.</span></h1>
+    <p><span data-nl>Geen jargon, geen indicator-soep. Alleen de vier dingen waar traden écht om draait — in gewone taal, zodat je zelfs als complete beginner kunt starten.</span><span data-en>No jargon, no indicator soup. Just the four things trading actually comes down to — in plain language, so you can start even as a complete beginner.</span></p>
+    <div class="cta">
+      <a href="#lessen" class="btn btn-primary"><span data-nl>Bekijk de lessen →</span><span data-en>See the lessons →</span></a>
+      <a href="/start" class="btn btn-ghost"><span data-nl>Ik ken de basis — sla over</span><span data-en>I know the basics — skip</span></a>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <section id="lessen" style="padding-top:40px">
+    <div class="lead-note">
+      <span class="ic">✦</span>
+      <p><span data-nl>Deze cursus staat <b>naast</b> je cockpit — nooit in de weg. Nieuw? Volg 'm eerst. Ervaren? Sla 'm over en begin meteen. Je kunt altijd terugkomen.</span><span data-en>This course sits <b>next to</b> your cockpit — never in the way. New? Take it first. Experienced? Skip it and start right away. You can always come back.</span></p>
+    </div>
+
+    <div class="curric" id="curric"></div>
+
+    <div class="cta-band">
+      <h2><span data-nl>Klaar met de basis? Tijd voor je cockpit.</span><span data-en>Done with the basics? Time for your cockpit.</span></h2>
+      <p><span data-nl>De cursus geeft je het fundament; de cockpit dwingt het af. Samen maken ze van kennis een gewoonte.</span><span data-en>The course gives you the foundation; the cockpit enforces it. Together they turn knowledge into a habit.</span></p>
+      <div class="row">
+        <a href="/start" class="btn btn-primary"><span data-nl>Naar Getting Started →</span><span data-en>To Getting Started →</span></a>
+        <a href="/" class="btn btn-ghost"><span data-nl>Terug naar home</span><span data-en>Back to home</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="lb" id="lb">
+  <div class="box">
+    <div class="frame" id="lb-frame"></div>
+    <div class="cap"><h3 id="lb-title"></h3><button class="x" onclick="closeLB()"><span data-nl>Sluiten</span><span data-en>Close</span></button></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="foot"><span data-nl>MyTradingBot is een voorspel- en analysetool voor het volgen van je eigen handelsmethode. Geen beleggingsadvies, geen garantie op rendement. 18+ · speel met mate.</span><span data-en>MyTradingBot is a prediction and analysis tool for following your own trading method. Not investment advice, no guarantee of returns. 18+ · play responsibly.</span></p>
+  </div>
+</footer>
+
+<script>
+  /* ===========================================================
+     LESSEN TOEVOEGEN — voeg een object toe of vul 'youtube'/'mp4' in.
+       title_nl/title_en, note_nl/note_en, dur (bijv. "8 min"),
+       youtube: "VIDEO_ID"  OF  mp4: "lessen/les-01.mp4"
+       Zonder youtube/mp4 → toont "Binnenkort".
+     =========================================================== */
+  var LESSONS = [
+    { title_nl:"Wat is naakte prijsactie?", title_en:"What is naked price action?", note_nl:"Waarom je geen indicatoren nodig hebt om de markt te lezen.", note_en:"Why you don't need indicators to read the market.", dur:"8 min" },
+    { title_nl:"Zones & niveaus tekenen", title_en:"Drawing zones & levels", note_nl:"Hoe je jouw kaart maakt — de enige bron van waarheid.", note_en:"How you build your map — the only source of truth.", dur:"10 min" },
+    { title_nl:"De vier timeframes", title_en:"The four timeframes", note_nl:"Van overzicht naar precisie, zonder te verdwalen.", note_en:"From overview to precision, without getting lost.", dur:"9 min" },
+    { title_nl:"Discipline & de poorten", title_en:"Discipline & the gates", note_nl:"Risico, reward-risk en waarom geen-trade de norm is.", note_en:"Risk, reward-risk and why no-trade is the norm.", dur:"11 min" },
+    { title_nl:"Journalen & leren van je data", title_en:"Journaling & learning from your data", note_nl:"Je edge groeit uit cijfers, niet uit gevoel.", note_en:"Your edge grows from numbers, not feeling.", dur:"7 min" },
+    { title_nl:"Je cockpit lezen", title_en:"Reading your cockpit", note_nl:"Elk scherm, elke poort, elk ticket — in gewone taal.", note_en:"Every screen, every gate, every ticket — in plain language.", dur:"12 min" }
+  ];
+
+  function setLang(l){
+    document.documentElement.lang=l;
+    document.getElementById('btn-nl').classList.toggle('on',l==='nl');
+    document.getElementById('btn-en').classList.toggle('on',l==='en');
+    try{localStorage.setItem('mtb.lang',l);}catch(e){}
+  }
+  (function(){var s='nl';try{s=localStorage.getItem('mtb.lang')||(navigator.language||'nl').slice(0,2);}catch(e){}setLang(s==='en'?'en':'nl');
+    var v=document.querySelector('.hero-media video');if(v){var r=0.7;v.playbackRate=r;['loadedmetadata','play','canplay'].forEach(function(e){v.addEventListener(e,function(){v.playbackRate=r;});});}
+  })();
+
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function render(){
+    var c=document.getElementById('curric'); c.innerHTML='';
+    LESSONS.forEach(function(L,i){
+      var has=!!(L.youtube||L.mp4);
+      var el=document.createElement('div');
+      el.className='lesson'+(has?'':' locked');
+      el.innerHTML='<div class="n">'+(i+1)+'</div>'+
+        '<div class="body"><h3><span data-nl>'+esc(L.title_nl)+'</span><span data-en>'+esc(L.title_en)+'</span></h3>'+
+        '<p><span data-nl>'+esc(L.note_nl)+'</span><span data-en>'+esc(L.note_en)+'</span></p></div>'+
+        '<div class="right">'+(L.dur?'<span class="dur">'+esc(L.dur)+'</span>':'')+
+          (has?'<span class="play"></span>':'<span class="soon"><span data-nl>Binnenkort</span><span data-en>Soon</span></span>')+'</div>';
+      if(has){ el.addEventListener('click',function(){ openLB(L); }); }
+      c.appendChild(el);
+    });
+    setLang(document.documentElement.lang);
+  }
+  function openLB(L){
+    var f=document.getElementById('lb-frame');
+    if(L.youtube){ f.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(L.youtube)+'?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen></iframe>'; }
+    else if(L.mp4){ f.innerHTML='<video src="'+esc(L.mp4)+'" controls autoplay playsinline></video>'; }
+    document.getElementById('lb-title').textContent=document.documentElement.lang==='en'?(L.title_en||''):(L.title_nl||'');
+    document.getElementById('lb').classList.add('open');
+  }
+  function closeLB(){ document.getElementById('lb').classList.remove('open'); document.getElementById('lb-frame').innerHTML=''; }
+  document.getElementById('lb').addEventListener('click',function(e){ if(e.target===this) closeLB(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLB(); });
+  render();
+</script>
+</body>
+</html>
