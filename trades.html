@@ -4,34 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MyTradingBot — Elke trade op video</title>
-<meta name="description" content="Radicale transparantie: elke trade die ik neem opgenomen en gepost — winst én verlies. Geen cherry-picking.">
+<meta name="description" content="Radicale transparantie: elke trade die ik neem opgenomen en gepost — winst én verlies. Geen cherry-picking, geen gefilterde hoogtepunten.">
 <meta name="theme-color" content="#0a0f1c">
+<meta property="og:title" content="MyTradingBot — Elke trade op video">
+<meta property="og:description" content="Radicale transparantie: winst én verlies, elke trade op video. Het proces telt, niet de highlight.">
+<meta property="og:type" content="website">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--navy:#0a0f1c;--navy-2:#0e1526;--panel:#111a2e;--line:rgba(210,180,120,.14);--gold:#d9a94e;--gold-soft:#e6c680;--ink:#f4f0e6;--muted:#9aa6bd;--faint:#5f6b82;--green:#4ecb8f;--red:#e2685f;--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--wrap:1180px;}
+  :root{
+    --navy:#0a0f1c; --navy-2:#0e1526; --panel:#111a2e; --line:rgba(210,180,120,.14);
+    --gold:#d9a94e; --gold-soft:#e6c680; --ink:#f4f0e6; --muted:#9aa6bd; --faint:#5f6b82;
+    --green:#4ecb8f; --red:#e2685f; --display:"Fraunces",Georgia,serif; --body:"Manrope",system-ui,sans-serif; --wrap:1180px;
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:radial-gradient(120% 70% at 70% -5%,#132038 0%,#0b1120 42%,#070b14 100%);background-attachment:fixed;color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{background:radial-gradient(120% 70% at 70% -5%,#132038 0%,#0b1120 42%,#070b14 100%);background-attachment:fixed;color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
-  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.06;letter-spacing:-.01em}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
   [data-en]{display:none}
   html[lang="en"] [data-nl]{display:none}
   html[lang="en"] [data-en]{display:inline}
-  .btn{display:inline-flex;align-items:center;gap:9px;font:700 14px/1 var(--body);letter-spacing:.02em;padding:13px 22px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .btn{display:inline-flex;align-items:center;gap:9px;font:700 14px/1 var(--body);letter-spacing:.02em;padding:13px 22px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
   .btn-ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
-  .btn-ghost:hover{border-color:var(--gold)}
+  .btn-ghost:hover{border-color:var(--gold);transform:translateY(-2px)}
   .btn-primary{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#20160a;box-shadow:0 8px 30px rgba(217,169,78,.28)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(217,169,78,.4)}
   :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
 
   header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,15,28,.72);border-bottom:1px solid var(--line)}
-  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
   .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:19px;letter-spacing:-.005em}
   .brand .mark svg{display:block;filter:drop-shadow(0 0 9px rgba(217,169,78,.35))}
   .nav-right{display:flex;gap:16px;align-items:center}
@@ -41,58 +51,79 @@
   .flag{width:19px;height:13px;border-radius:2px;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
   .flag-nl{background:linear-gradient(180deg,#ae1c28 0 33.3%,#fff 33.3% 66.6%,#21468b 66.6% 100%)}
   .flag-gb{background:linear-gradient(180deg,transparent 40%,#c8102e 40% 60%,transparent 60%),linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(45deg,transparent 46%,#fff 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,#fff 46% 54%,transparent 54%),#012169}
-  @media(max-width:620px){.nav-right .btn{display:none}}
+  @media(max-width:640px){.nav-right .btn-ghost{display:none}}
 
-  .hero{padding:56px 0 20px;text-align:center}
-  .eyebrow{font:700 11px/1 var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
-  .hero h1{font-size:clamp(34px,6vw,56px);margin:16px 0 0}
-  .hero p{color:var(--muted);font-size:clamp(16px,2vw,19px);max-width:60ch;margin:18px auto 0}
-  .stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-  .stat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:120px}
-  .stat b{font-family:var(--display);font-size:26px;color:var(--gold);display:block}
-  .stat span{color:var(--muted);font-size:12.5px}
+  /* HERO — editorial, radical transparency */
+  .hero{position:relative;padding:78px 0 26px;text-align:center;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-14%;left:50%;transform:translateX(-50%);width:min(680px,90%);height:340px;background:radial-gradient(60% 60% at 50% 40%,rgba(217,169,78,.14),transparent 70%);pointer-events:none;z-index:0}
+  .hero-in{position:relative;z-index:1}
+  .eyebrow{font:700 11px/1 var(--body);letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  .hero h1{font-size:clamp(38px,7vw,68px);margin:18px auto 0;max-width:16ch}
+  .hero h1 em{font-style:italic;color:var(--gold)}
+  .hero p{color:var(--muted);font-size:clamp(16px,2vw,20px);max-width:58ch;margin:20px auto 0;line-height:1.55}
+  .rule{width:56px;height:1px;margin:30px auto 0;background:linear-gradient(90deg,transparent,rgba(217,169,78,.7),transparent)}
 
-  .filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:34px 0 10px}
-  .filters button{background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--muted);font:600 13px/1 var(--body);padding:10px 16px;border-radius:20px;cursor:pointer;transition:.2s}
+  .stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .stat{position:relative;background:linear-gradient(180deg,rgba(22,31,52,.5),rgba(12,18,32,.5));border:1px solid var(--line);border-radius:16px;padding:20px 26px;min-width:132px;overflow:hidden}
+  .stat::before{content:"";position:absolute;top:0;left:22px;right:22px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.5),transparent)}
+  .stat b{font-family:var(--display);font-weight:500;font-size:32px;color:var(--gold);display:block;line-height:1}
+  .stat span{color:var(--muted);font-size:12.5px;letter-spacing:.02em;display:block;margin-top:6px}
+
+  /* SECTION intro / filters */
+  .board{padding:22px 0 60px}
+  .board-head{display:flex;flex-wrap:wrap;gap:20px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:22px;border-bottom:1px solid var(--line);margin:14px 0 30px}
+  .board-head h2{font-size:clamp(22px,3.4vw,32px);max-width:18ch}
+  .board-head p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:52ch}
+  .filters{display:flex;gap:10px;flex-wrap:wrap}
+  .filters button{background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--muted);font:600 13px/1 var(--body);padding:11px 18px;border-radius:22px;cursor:pointer;transition:.22s}
+  .filters button:hover{border-color:rgba(217,169,78,.4);color:var(--ink)}
   .filters button.on{background:rgba(217,169,78,.16);border-color:rgba(217,169,78,.4);color:var(--ink)}
 
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:26px 0 60px}
-  .card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel);transition:transform .25s,border-color .25s;cursor:pointer}
-  .card:hover{transform:translateY(-4px);border-color:rgba(217,169,78,.4)}
-  .card.soon{cursor:default;opacity:.75}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:linear-gradient(180deg,rgba(22,31,52,.5),rgba(12,18,32,.55));transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;cursor:pointer}
+  .card::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.4),transparent);opacity:0;transition:opacity .28s ease;z-index:2}
+  .card:hover{transform:translateY(-5px);border-color:rgba(217,169,78,.42);box-shadow:0 22px 50px rgba(4,7,14,.5)}
+  .card:hover::before{opacity:1}
+  .card.soon{cursor:default;opacity:.72}
+  .card.soon:hover{transform:none;border-color:var(--line);box-shadow:none}
   .card .thumb{aspect-ratio:16/10;position:relative;display:grid;place-items:center;background:radial-gradient(120% 120% at 60% 10%,#16223c,#0b1322);border-bottom:1px solid var(--line)}
   .card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .card .thumb .play{position:relative;z-index:1;width:56px;height:56px;border-radius:50%;background:rgba(10,15,28,.55);border:1px solid rgba(217,169,78,.5);display:grid;place-items:center;backdrop-filter:blur(4px)}
+  .card .thumb .play{position:relative;z-index:1;width:60px;height:60px;border-radius:50%;background:rgba(10,15,28,.55);border:1px solid rgba(217,169,78,.5);display:grid;place-items:center;backdrop-filter:blur(4px);transition:transform .28s ease,background .28s ease,box-shadow .28s ease}
+  .card:hover .thumb .play{transform:scale(1.06);background:rgba(217,169,78,.18);box-shadow:0 0 30px rgba(217,169,78,.28)}
   .card .thumb .play::after{content:"";border-left:16px solid var(--gold);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
-  .card .tag{position:absolute;top:12px;left:12px;z-index:1;font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;padding:6px 9px;border-radius:20px}
+  .card .tag{position:absolute;top:13px;left:13px;z-index:1;font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;border-radius:20px}
   .tag.win{color:var(--green);background:rgba(78,203,143,.14);border:1px solid rgba(78,203,143,.3)}
   .tag.loss{color:var(--red);background:rgba(226,104,95,.14);border:1px solid rgba(226,104,95,.3)}
-  .tag.notrade{color:var(--gold-soft);background:rgba(217,169,78,.14);border:1px solid rgba(217,169,78,.3)}
   .tag.soon{color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line)}
-  .card .meta{padding:16px 18px}
-  .card .meta h3{font-size:17px;margin-bottom:4px}
-  .card .meta .date{color:var(--faint);font-size:12.5px;margin-bottom:8px}
+  .card .meta{padding:18px 20px 20px}
+  .card .meta .date{color:var(--faint);font:600 12px/1 var(--body);letter-spacing:.04em;margin-bottom:9px;font-variant-numeric:tabular-nums}
+  .card .meta h3{font-size:18px;margin-bottom:6px}
   .card .meta p{color:var(--muted);font-size:14px}
   @media(max-width:880px){.grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}.board-head{gap:14px}}
 
-  .empty{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--muted)}
+  .empty{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--muted);border:1px dashed var(--line);border-radius:18px;background:rgba(255,255,255,.015)}
 
   /* lightbox */
-  .lb{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(5,8,15,.86);backdrop-filter:blur(8px)}
+  .lb{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(5,8,15,.88);backdrop-filter:blur(8px)}
   .lb.open{display:flex}
-  .lb .box{width:100%;max-width:920px}
+  .lb .box{width:100%;max-width:940px}
   .lb .frame{position:relative;aspect-ratio:16/9;background:#000;border:1px solid var(--line);border-radius:16px;overflow:hidden}
   .lb .frame iframe,.lb .frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
   .lb .cap{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:16px}
   .lb .cap h3{font-size:20px}
   .lb .x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 14px;cursor:pointer;font:700 13px/1 var(--body)}
 
-  footer{padding:36px 0;border-top:1px solid var(--line)}
+  footer{padding:44px 0;border-top:1px solid var(--line);margin-top:20px}
   .foot{color:var(--faint);font-size:12.5px;text-align:center;max-width:80ch;margin:0 auto;line-height:1.7}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
+<h2 class="sr-only">Elke trade op video — radicale transparantie: winst én verlies, geen cherry-picking. Filter op alles, winst of verlies.</h2>
 
 <header class="nav">
   <div class="wrap nav-in">
@@ -107,28 +138,40 @@
   </div>
 </header>
 
-<main class="wrap">
+<main>
   <section class="hero">
-    <span class="eyebrow"><span data-nl>Radicale transparantie</span><span data-en>Radical transparency</span></span>
-    <h1><span data-nl>Elke trade. Op video.</span><span data-en>Every trade. On video.</span></h1>
-    <p><span data-nl>Geen cherry-picking, geen gefilterde hoogtepunten. Elke keer dat ik een trade neem, film ik 'm en post ik 'm hier — winst én verlies. Het proces telt, niet de highlight.</span><span data-en>No cherry-picking, no filtered highlights. Every time I take a trade, I record it and post it here — win and loss. The process counts, not the highlight.</span></p>
-    <div class="stats">
-      <div class="stat"><b id="s-total">0</b><span data-nl>Trades op video</span><span data-en>Trades on video</span></div>
-      <div class="stat"><b id="s-win">0</b><span data-nl>Winst</span><span data-en>Wins</span></div>
-      <div class="stat"><b id="s-loss">0</b><span data-nl>Verlies</span><span data-en>Losses</span></div>
+    <div class="wrap hero-in">
+      <span class="eyebrow reveal"><span data-nl>Radicale transparantie</span><span data-en>Radical transparency</span></span>
+      <h1 class="reveal"><span data-nl>Elke trade.<br><em>Op video.</em></span><span data-en>Every trade.<br><em>On video.</em></span></h1>
+      <p class="reveal"><span data-nl>Geen cherry-picking, geen gefilterde hoogtepunten. Elke keer dat ik een trade neem, film ik 'm en post ik 'm hier — winst én verlies. Het proces telt, niet de highlight.</span><span data-en>No cherry-picking, no filtered highlights. Every time I take a trade, I record it and post it here — win and loss. The process counts, not the highlight.</span></p>
+      <div class="rule reveal" aria-hidden="true"></div>
+      <div class="stats">
+        <div class="stat reveal"><b id="s-total">0</b><span data-nl>Trades op video</span><span data-en>Trades on video</span></div>
+        <div class="stat reveal"><b id="s-win">0</b><span data-nl>Winst</span><span data-en>Wins</span></div>
+        <div class="stat reveal"><b id="s-loss">0</b><span data-nl>Verlies</span><span data-en>Losses</span></div>
+      </div>
     </div>
   </section>
 
-  <div class="filters">
-    <button class="on" data-f="all"><span data-nl>Alles</span><span data-en>All</span></button>
-    <button data-f="win"><span data-nl>Winst</span><span data-en>Wins</span></button>
-    <button data-f="loss"><span data-nl>Verlies</span><span data-en>Losses</span></button>
-  </div>
+  <div class="wrap board">
+    <div class="board-head reveal">
+      <div>
+        <span class="eyebrow"><span data-nl>Het archief</span><span data-en>The archive</span></span>
+        <h2 style="margin-top:12px"><span data-nl>Alles wat ik neem, ongefilterd.</span><span data-en>Everything I take, unfiltered.</span></h2>
+        <p><span data-nl>Filter op uitkomst. Elke kaart is een volledige opname — van grafiek tot exit.</span><span data-en>Filter by outcome. Every card is a full recording — from chart to exit.</span></p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter">
+        <button class="on" data-f="all"><span data-nl>Alles</span><span data-en>All</span></button>
+        <button data-f="win"><span data-nl>Winst</span><span data-en>Wins</span></button>
+        <button data-f="loss"><span data-nl>Verlies</span><span data-en>Losses</span></button>
+      </div>
+    </div>
 
-  <div class="grid" id="grid"></div>
+    <div class="grid" id="grid"></div>
+  </div>
 </main>
 
-<div class="lb" id="lb">
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Trade-video">
   <div class="box">
     <div class="frame" id="lb-frame"></div>
     <div class="cap"><h3 id="lb-title"></h3><button class="x" onclick="closeLB()"><span data-nl>Sluiten</span><span data-en>Close</span></button></div>
@@ -174,11 +217,11 @@
   function render(filter){
     var grid=document.getElementById('grid'); grid.innerHTML='';
     var list=TRADES.filter(function(t){return filter==='all'||t.result===filter;});
-    if(!list.length){ grid.innerHTML='<div class="empty"><span data-nl>Nog geen trades in deze categorie.</span><span data-en>No trades in this category yet.</span></div>'; setLang(document.documentElement.lang); return; }
+    if(!list.length){ grid.innerHTML='<div class="empty"><span data-nl>Nog geen trades in deze categorie.</span><span data-en>No trades in this category yet.</span></div>'; setLang(document.documentElement.lang); observe(); return; }
     list.forEach(function(t,i){
       var soon=t.result==='soon';
       var card=document.createElement('div');
-      card.className='card'+(soon?' soon':'');
+      card.className='card reveal'+(soon?' soon':'');
       var thumb = t.thumb ? '<img src="'+esc(t.thumb)+'" alt="">' : '';
       card.innerHTML=
         '<div class="thumb">'+thumb+'<span class="tag '+t.result+'">'+
@@ -193,6 +236,7 @@
       grid.appendChild(card);
     });
     setLang(document.documentElement.lang);
+    observe();
   }
 
   function openLB(t){
@@ -222,6 +266,15 @@
       b.classList.add('on'); render(b.dataset.f);
     });
   });
+
+  // motion that whispers
+  var io;
+  function observe(){
+    var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(rm){ document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');}); return; }
+    if(!io){ io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'}); }
+    document.querySelectorAll('.reveal:not(.in)').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%5,4)*50)+'ms';io.observe(el);});
+  }
 
   render('all');
 </script>

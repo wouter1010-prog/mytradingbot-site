@@ -3,38 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MyTradingBot — Aan de slag</title>
+<title>MyTradingBot — Aan de slag · stap voor stap in oefenmodus</title>
+<meta name="description" content="Zo begin je met MyTradingBot: zes rustige stappen — extensie, code, charts, read-only koppeling, je kaart en de poorten. In oefenmodus, zonder risico. In gewone taal.">
 <meta name="theme-color" content="#0a0f1c">
+<meta property="og:title" content="MyTradingBot — Aan de slag">
+<meta property="og:description" content="Zes rustige stappen naar je eerste kaart. In oefenmodus, zonder risico.">
+<meta property="og:type" content="website">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--navy:#0a0f1c;--navy-2:#0e1526;--panel:#111a2e;--line:rgba(210,180,120,.14);--gold:#d9a94e;--gold-soft:#e6c680;--ink:#f4f0e6;--muted:#9aa6bd;--faint:#5f6b82;--green:#4ecb8f;--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--wrap:940px;}
+  :root{
+    --navy:#0a0f1c; --navy-2:#0e1526; --panel:#111a2e; --line:rgba(210,180,120,.14);
+    --gold:#d9a94e; --gold-soft:#e6c680; --ink:#f4f0e6; --muted:#9aa6bd; --faint:#5f6b82;
+    --green:#4ecb8f; --display:"Fraunces",Georgia,serif; --body:"Manrope",system-ui,sans-serif; --wrap:1000px;
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:radial-gradient(120% 80% at 70% -5%,#132038 0%,#0b1120 45%,#070b14 100%);background-attachment:fixed;color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{background:var(--navy);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
-  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.06;letter-spacing:-.01em}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  .eyebrow{font:700 11px/1 var(--body);letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
   [data-en]{display:none}
   html[lang="en"] [data-nl]{display:none}
   html[lang="en"] [data-en]{display:inline}
   html[lang="en"] [data-en].block,[data-nl].block{display:block}
   html[lang="en"] [data-nl].block{display:none}
-  .btn{display:inline-flex;align-items:center;gap:9px;font:700 14px/1 var(--body);letter-spacing:.02em;padding:13px 22px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s;background:none}
+
+  .btn{display:inline-flex;align-items:center;gap:9px;font:700 14px/1 var(--body);letter-spacing:.02em;padding:15px 26px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;background:none}
   .btn-primary{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#20160a;box-shadow:0 8px 30px rgba(217,169,78,.28)}
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(217,169,78,.4)}
-  .btn-ghost{border-color:var(--line);color:var(--ink)}
-  .btn-ghost:hover{border-color:var(--gold)}
-  .btn-sm{font:700 12.5px/1 var(--body);padding:10px 15px;border-radius:10px}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
+  .btn-ghost:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .btn-sm{font:700 12.5px/1 var(--body);padding:11px 16px;border-radius:10px}
   :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
 
   header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,15,28,.72);border-bottom:1px solid var(--line)}
-  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
   .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:500;font-size:19px;letter-spacing:-.005em}
   .brand .mark svg{display:block;filter:drop-shadow(0 0 9px rgba(217,169,78,.35))}
   .nav-right{display:flex;gap:16px;align-items:center}
@@ -44,61 +56,91 @@
   .flag{width:19px;height:13px;border-radius:2px;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
   .flag-nl{background:linear-gradient(180deg,#ae1c28 0 33.3%,#fff 33.3% 66.6%,#21468b 66.6% 100%)}
   .flag-gb{background:linear-gradient(180deg,transparent 40%,#c8102e 40% 60%,transparent 60%),linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(45deg,transparent 46%,#fff 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,#fff 46% 54%,transparent 54%),#012169}
-  @media(max-width:620px){.nav-right .btn-ghost{display:none}}
+  @media(max-width:640px){.nav-right .btn-ghost{display:none}}
 
-  .hero{padding:52px 0 8px;text-align:center}
-  .eyebrow{font:700 11px/1 var(--body);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
-  .hero h1{font-size:clamp(32px,5.5vw,50px);margin:14px 0 0}
-  .welcome{max-width:60ch;margin:20px auto 0;background:linear-gradient(180deg,rgba(22,31,52,.55),rgba(12,18,32,.55));border:1px solid var(--line);border-radius:16px;padding:20px 24px;text-align:left;display:flex;gap:16px;align-items:flex-start}
-  .welcome .w-mark{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:radial-gradient(120% 120% at 30% 20%,#182742,#0b1322);border:1px solid rgba(217,169,78,.4);display:grid;place-items:center;font-family:var(--display);color:var(--gold);font-size:20px}
-  .welcome p{color:var(--ink);font-size:15.5px}
+  /* HERO — editorial */
+  .hero{position:relative;overflow:hidden}
+  .hero-media{position:absolute;inset:0;z-index:0;background:radial-gradient(130% 90% at 70% -10%,#132038,#0b1120 44%,#070b14)}
+  .hero-media::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 60%,rgba(10,15,28,.7) 90%,var(--navy) 100%)}
+  .hero-in{position:relative;z-index:1;padding:78px 0 44px;text-align:center}
+  .hero h1{font-size:clamp(34px,6vw,60px);margin:20px auto 0;max-width:18ch}
+  .hero h1 em{font-style:italic;color:var(--gold)}
+  .hero .lede{color:var(--muted);font-size:clamp(16px,2vw,19px);max-width:56ch;margin:22px auto 0;line-height:1.55}
+
+  /* WELCOME — Wouter's note, editorial lead-note */
+  .welcome{max-width:64ch;margin:36px auto 0;text-align:left;background:radial-gradient(100% 200% at 50% 0%,rgba(217,169,78,.13),transparent 60%),var(--navy-2);border:1px solid rgba(217,169,78,.3);border-radius:20px;padding:28px 30px;display:flex;gap:18px;align-items:flex-start;box-shadow:0 0 60px rgba(217,169,78,.06);position:relative;overflow:hidden}
+  .welcome::before{content:"";position:absolute;top:0;left:30px;right:30px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,169,78,.7),transparent)}
+  .welcome .w-mark{flex:0 0 auto;width:48px;height:48px;border-radius:50%;background:radial-gradient(120% 120% at 30% 20%,#182742,#0b1322);border:1px solid rgba(217,169,78,.4);display:grid;place-items:center;font-family:var(--display);color:var(--gold);font-size:21px}
+  .welcome p{color:var(--ink);font-size:16px}
   .welcome p b{color:var(--gold-soft)}
-  .welcome .sig{font-family:var(--display);font-style:italic;color:var(--muted);font-size:14px;margin-top:4px}
+  .welcome .sig{font-family:var(--display);font-style:italic;color:var(--muted);font-size:14.5px;margin-top:6px}
 
-  .progwrap{max-width:var(--wrap);margin:30px auto 0;padding:0 24px}
+  /* CHOICE BANNER — non-blocking route to the course */
+  .choice{margin-top:34px}
+  .choice-in{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:radial-gradient(120% 220% at 0% 0%,rgba(217,169,78,.12),transparent 60%),var(--panel);border:1px solid rgba(217,169,78,.26);border-radius:18px;padding:20px 26px}
+  .choice-in p{color:var(--ink);font-size:15px;margin:0;max-width:54ch}
+  .choice-in p b{color:var(--gold-soft)}
+  .choice-in .row{display:flex;gap:10px;flex-wrap:wrap}
+
+  /* PROGRESS */
+  .progwrap{margin:56px 0 0}
+  .progwrap .eyebrow{display:block;margin-bottom:14px}
   .progbar{height:10px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid var(--line);overflow:hidden}
-  .progbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-soft));transition:width .4s ease}
-  .proglabel{display:flex;justify-content:space-between;margin-top:10px;font:600 12.5px/1 var(--body);color:var(--muted)}
-  .proglabel b{color:var(--gold)}
+  .progbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-soft));transition:width .5s ease}
+  @media(prefers-reduced-motion:reduce){.progbar span{transition:none}}
+  .proglabel{display:flex;justify-content:space-between;margin-top:12px;font:600 13px/1.4 var(--body);color:var(--muted)}
+  .proglabel b{color:var(--gold);font-family:var(--display);font-weight:500;font-size:16px}
 
-  .steps{margin:36px 0 8px;position:relative}
-  .step{position:relative;display:flex;gap:20px;padding:0 0 20px;align-items:flex-start}
-  .step .check{flex:0 0 auto;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-family:var(--display);font-size:18px;color:var(--gold);background:linear-gradient(180deg,#16223c,#0b1120);border:1px solid rgba(217,169,78,.35);cursor:pointer;transition:.2s;user-select:none}
+  /* STEPS */
+  .steps{margin:38px 0 8px;display:grid;gap:16px}
+  .step{position:relative;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+  .step .check{flex:0 0 auto;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-family:var(--display);font-style:italic;font-size:19px;color:var(--gold);background:linear-gradient(180deg,#16223c,#0b1120);border:1px solid rgba(217,169,78,.35);cursor:pointer;transition:.25s;user-select:none}
+  .step .check:hover{border-color:rgba(217,169,78,.6)}
   .step.done .check{background:linear-gradient(180deg,#173a2a,#0e2a1e);border-color:rgba(78,203,143,.6);color:var(--green)}
-  .step .card{flex:1;background:linear-gradient(180deg,rgba(22,31,52,.55),rgba(12,18,32,.55));border:1px solid var(--line);border-radius:16px;padding:22px 24px;transition:border-color .25s,opacity .25s}
+  .step .card{background:linear-gradient(180deg,rgba(22,31,52,.5),rgba(12,18,32,.5));border:1px solid var(--line);border-radius:16px;padding:24px 26px;transition:border-color .28s,opacity .28s,transform .28s}
+  .step .card:hover{border-color:rgba(217,169,78,.32)}
   .step.done .card{opacity:.72}
-  .step h3{font-size:20px;margin-bottom:8px}
-  .step h3 s{color:var(--muted);text-decoration-color:rgba(78,203,143,.5)}
-  .step p{color:var(--muted);font-size:15px}
-  .step .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+  .step h3{font-size:20px;margin-bottom:9px}
+  .step p{color:var(--muted);font-size:15px;max-width:64ch}
+  .step .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:center}
   .copyfield{display:inline-flex;align-items:center;gap:8px;background:rgba(7,11,20,.6);border:1px solid var(--line);border-radius:10px;padding:8px 8px 8px 13px;font:600 13px/1 var(--body);color:var(--gold-soft)}
   .copyfield button{background:rgba(217,169,78,.14);border:1px solid rgba(217,169,78,.3);color:var(--gold-soft);font:700 11px/1 var(--body);padding:7px 10px;border-radius:8px;cursor:pointer}
-  details.mini{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:rgba(7,11,20,.4);padding:0 16px}
+  .copyfield button:hover{background:rgba(217,169,78,.24)}
+  .step .hint{color:var(--faint);font-size:13px}
+  details.mini{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:rgba(7,11,20,.4);padding:0 16px}
   details.mini summary{cursor:pointer;list-style:none;padding:14px 0;font:600 13.5px/1 var(--body);color:var(--gold-soft);display:flex;justify-content:space-between;align-items:center}
   details.mini summary::-webkit-details-marker{display:none}
   details.mini summary::after{content:"+";color:var(--gold);font-size:20px}
   details.mini[open] summary::after{content:"–"}
-  details.mini ol{color:var(--muted);font-size:14px;padding:0 0 16px 20px;display:grid;gap:7px}
+  details.mini ol{color:var(--muted);font-size:14px;padding:0 0 16px 20px;display:grid;gap:8px}
   details.mini .warn{color:var(--gold-soft);font-size:13px;padding:0 0 16px}
+  @media(max-width:600px){.step{grid-template-columns:1fr;gap:12px}.step .check{width:42px;height:42px}}
 
-  .safe{margin:26px 0;background:linear-gradient(180deg,rgba(78,203,143,.06),transparent);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
-  .safe h3{font-size:17px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  /* SAFE note */
+  .safe{margin:40px 0 0;background:linear-gradient(180deg,rgba(78,203,143,.06),transparent);border:1px solid var(--line);border-radius:18px;padding:26px 28px}
+  .safe h3{font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
   .safe h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
-  .safe p{color:var(--muted);font-size:14.5px}
+  .safe p{color:var(--muted);font-size:15px;max-width:70ch}
 
-  .cta{text-align:center;margin:36px 0 20px;padding:40px 24px;background:radial-gradient(90% 140% at 50% 0%,rgba(217,169,78,.12),transparent 60%),var(--navy-2);border:1px solid var(--line);border-radius:20px;transition:border-color .3s,box-shadow .3s}
-  .cta.ready{border-color:rgba(217,169,78,.5);box-shadow:0 0 50px rgba(217,169,78,.12)}
-  .cta h2{font-size:clamp(24px,4vw,34px);max-width:24ch;margin:0 auto}
-  .cta p{color:var(--muted);margin:14px auto 0;max-width:48ch;font-size:15.5px}
-  .cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-  .cta .doneflag{display:none;color:var(--green);font:700 12.5px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
-  .cta.ready .doneflag{display:block}
+  /* CTA */
+  .cta-band{text-align:center;margin:56px 0 30px;padding:52px 24px;background:radial-gradient(90% 150% at 50% 0%,rgba(217,169,78,.13),transparent 60%),var(--navy-2);border:1px solid var(--line);border-radius:22px;transition:border-color .35s,box-shadow .35s}
+  .cta-band.ready{border-color:rgba(217,169,78,.5);box-shadow:0 0 60px rgba(217,169,78,.12)}
+  .cta-band .doneflag{display:none;color:var(--green);font:700 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+  .cta-band.ready .doneflag{display:block}
+  .cta-band h2{font-size:clamp(26px,4.4vw,40px);max-width:24ch;margin:0 auto}
+  .cta-band p{color:var(--muted);margin:16px auto 0;max-width:50ch;font-size:16px}
+  .cta-band .row{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:28px}
 
-  footer{padding:36px 0;border-top:1px solid var(--line);margin-top:30px}
-  .foot{color:var(--faint);font-size:12.5px;text-align:center;line-height:1.7;max-width:80ch;margin:0 auto}
+  footer{padding:44px 0;border-top:1px solid var(--line);margin-top:40px}
+  .foot{color:var(--faint);font-size:12.5px;text-align:center;line-height:1.7;max-width:82ch;margin:0 auto}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
+<h2 class="sr-only">Aan de slag: zes rustige stappen naar je eerste kaart, in oefenmodus en zonder risico.</h2>
 
 <header class="nav">
   <div class="wrap nav-in">
@@ -113,121 +155,132 @@
   </div>
 </header>
 
-<main class="wrap">
-  <section class="hero">
-    <span class="eyebrow"><span data-nl>Aan de slag</span><span data-en>Getting started</span></span>
-    <h1><span data-nl>Welkom. Zo begin je — stap voor stap.</span><span data-en>Welcome. Here's how to start — step by step.</span></h1>
-    <div class="welcome">
-      <div class="w-mark">W</div>
+<section class="hero">
+  <div class="hero-media" aria-hidden="true"></div>
+  <div class="wrap hero-in">
+    <span class="eyebrow reveal"><span data-nl>Aan de slag</span><span data-en>Getting started</span></span>
+    <h1 class="reveal"><span data-nl>Welkom. Zo begin je — <em>stap voor stap.</em></span><span data-en>Welcome. Here's how to start — <em>step by step.</em></span></h1>
+    <p class="lede reveal"><span data-nl>Zes rustige stappen, in oefenmodus, zonder risico. Aan het eind sta je klaar om je eerste kaart te laten controleren.</span><span data-en>Six calm steps, in practice mode, with no risk. By the end you're ready to have your first chart checked.</span></p>
+    <div class="welcome reveal">
+      <div class="w-mark" aria-hidden="true">W</div>
       <div>
         <p><span data-nl>Fijn dat je er bent. Ik heb dit gebouwd omdat ik zelf jarenlang mijn eigen regels brak. Vink hieronder elke stap af — <b>elk vinkje is een kleine overwinning</b>. Aan het eind sta je klaar om je eerste kaart te laten controleren, in oefenmodus, zonder risico.</span><span data-en>Glad you're here. I built this because I broke my own rules for years. Tick off each step below — <b>every check is a small win</b>. By the end you're ready to have your first chart checked, in practice mode, with no risk.</span></p>
         <p class="sig">— Wouter</p>
       </div>
     </div>
-  </section>
-</main>
+  </div>
+</section>
 
-<div class="wrap" style="margin-top:6px">
-  <div style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:radial-gradient(120% 220% at 0% 0%,rgba(217,169,78,.13),transparent 60%),var(--panel);border:1px solid rgba(217,169,78,.28);border-radius:16px;padding:16px 22px;box-shadow:0 0 40px rgba(217,169,78,.05)">
-    <p style="color:var(--ink);font-size:15px;margin:0;max-width:52ch"><span data-nl>Nieuw met naakte prijsactie? <b style="color:var(--gold-soft)">Volg eerst de basiscursus.</b> Ken je de basis al? Ga gewoon door met de stappen hieronder.</span><span data-en>New to naked price action? <b style="color:var(--gold-soft)">Take the basic course first.</b> Already know the basics? Just continue with the steps below.</span></p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a href="/cursus" class="btn btn-primary btn-sm"><span data-nl>Naar de basiscursus →</span><span data-en>To the basic course →</span></a>
-      <a href="#steps" class="btn btn-ghost btn-sm"><span data-nl>Sla over</span><span data-en>Skip</span></a>
+<main>
+  <div class="wrap choice">
+    <div class="choice-in reveal">
+      <p><span data-nl>Nieuw met naakte prijsactie? <b>Volg eerst de basiscursus.</b> Ken je de basis al? Ga gewoon door met de stappen hieronder.</span><span data-en>New to naked price action? <b>Take the basic course first.</b> Already know the basics? Just continue with the steps below.</span></p>
+      <div class="row">
+        <a href="/cursus" class="btn btn-primary btn-sm"><span data-nl>Naar de basiscursus →</span><span data-en>To the basic course →</span></a>
+        <a href="#steps" class="btn btn-ghost btn-sm"><span data-nl>Sla over</span><span data-en>Skip</span></a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="progwrap">
-  <div class="progbar"><span id="progfill"></span></div>
-  <div class="proglabel">
-    <span><span data-nl>Jouw voortgang</span><span data-en>Your progress</span></span>
-    <span><b id="progcount">0</b> / 6 <span data-nl>· ± 15 min · oefenmodus</span><span data-en>· ± 15 min · practice mode</span></span>
+  <div class="wrap">
+    <div class="progwrap reveal">
+      <span class="eyebrow"><span data-nl>Jouw voortgang</span><span data-en>Your progress</span></span>
+      <div class="progbar"><span id="progfill"></span></div>
+      <div class="proglabel">
+        <span><span data-nl>Elk vinkje een kleine overwinning</span><span data-en>Every check a small win</span></span>
+        <span><b id="progcount">0</b> / 6 <span data-nl>· ± 15 min · oefenmodus</span><span data-en>· ± 15 min · practice mode</span></span>
+      </div>
+    </div>
   </div>
-</div>
 
-<main class="wrap">
-  <section class="steps" id="steps">
+  <div class="wrap">
+    <section class="steps" id="steps" aria-label="Stappen">
 
-    <div class="step" data-step="1">
-      <div class="check" onclick="toggle(1)" aria-label="Afvinken">1</div>
-      <div class="card">
-        <h3><span data-nl>Installeer de browser-extensie</span><span data-en>Install the browser extension</span></h3>
-        <p><span data-nl>De extensie is de brug tussen je charts en de cockpit. Je krijgt een mapje toegestuurd; die zet je één keer in Chrome.</span><span data-en>The extension is the bridge between your charts and the cockpit. You'll receive a folder; you add it to Chrome once.</span></p>
-        <div class="actions">
-          <span class="copyfield">chrome://extensions <button onclick="copyTxt('chrome://extensions',this)"><span data-nl>Kopieer</span><span data-en>Copy</span></button></span>
-          <span style="color:var(--faint);font-size:13px"><span data-nl>→ Ontwikkelaarsmodus aan → “Uitgepakt laden” → kies de map.</span><span data-en>→ Developer mode on → “Load unpacked” → select the folder.</span></span>
+      <article class="step reveal" data-step="1">
+        <div class="check" role="button" tabindex="0" onclick="toggle(1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(1);}" aria-label="Stap 1 afvinken">1</div>
+        <div class="card">
+          <h3><span data-nl>Installeer de browser-extensie</span><span data-en>Install the browser extension</span></h3>
+          <p><span data-nl>De extensie is de brug tussen je charts en de cockpit. Je krijgt een mapje toegestuurd; die zet je één keer in Chrome.</span><span data-en>The extension is the bridge between your charts and the cockpit. You'll receive a folder; you add it to Chrome once.</span></p>
+          <div class="actions">
+            <span class="copyfield">chrome://extensions <button onclick="copyTxt('chrome://extensions',this)"><span data-nl>Kopieer</span><span data-en>Copy</span></button></span>
+            <span class="hint"><span data-nl>→ Ontwikkelaarsmodus aan → “Uitgepakt laden” → kies de map.</span><span data-en>→ Developer mode on → “Load unpacked” → select the folder.</span></span>
+          </div>
         </div>
+      </article>
+
+      <article class="step reveal" data-step="2">
+        <div class="check" role="button" tabindex="0" onclick="toggle(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(2);}" aria-label="Stap 2 afvinken">2</div>
+        <div class="card">
+          <h3><span data-nl>Voer je bèta-code in</span><span data-en>Enter your beta code</span></h3>
+          <p><span data-nl>Je ontving een eenmalige code. Die opent jouw eigen, afgeschermde werkruimte — gescheiden van alle anderen, in oefenmodus.</span><span data-en>You received a one-time code. It unlocks your own isolated workspace — separated from everyone else, in practice mode.</span></p>
+          <div class="actions"><a href="/login" class="btn btn-ghost btn-sm"><span data-nl>Naar het codescherm →</span><span data-en>To the code screen →</span></a></div>
+        </div>
+      </article>
+
+      <article class="step reveal" data-step="3">
+        <div class="check" role="button" tabindex="0" onclick="toggle(3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(3);}" aria-label="Stap 3 afvinken">3</div>
+        <div class="card">
+          <h3><span data-nl>Open je charts in TradingView</span><span data-en>Open your charts in TradingView</span></h3>
+          <p><span data-nl>MyTradingBot leest mee met jouw TradingView-charts. Zet de vier timeframes klaar die je methode gebruikt; de extensie herkent 'm automatisch.</span><span data-en>MyTradingBot reads along with your TradingView charts. Set up the four timeframes your method uses; the extension detects it automatically.</span></p>
+          <div class="actions"><a href="https://www.tradingview.com/chart/" target="_blank" rel="noopener" class="btn btn-ghost btn-sm"><span data-nl>Open TradingView →</span><span data-en>Open TradingView →</span></a></div>
+        </div>
+      </article>
+
+      <article class="step reveal" data-step="4">
+        <div class="check" role="button" tabindex="0" onclick="toggle(4)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(4);}" aria-label="Stap 4 afvinken">4</div>
+        <div class="card">
+          <h3><span data-nl>Koppel je account — alleen-lezen</span><span data-en>Connect your account — read-only</span></h3>
+          <p><span data-nl>Zodat de cockpit je posities en buffer kan zien. Belangrijk: de koppeling is <b style="color:var(--gold-soft)">alleen-lezen</b>. De software kan nooit een order plaatsen of geld verplaatsen.</span><span data-en>So the cockpit can see your positions and buffer. Important: the connection is <b style="color:var(--gold-soft)">read-only</b>. The software can never place an order or move money.</span></p>
+          <details class="mini">
+            <summary><span data-nl>Zo maak je een read-only API-sleutel (30 sec)</span><span data-en>How to make a read-only API key (30 sec)</span></summary>
+            <ol>
+              <li><span data-nl>Open bij je exchange het API-gedeelte (Account → API).</span><span data-en>At your exchange, open the API section (Account → API).</span></li>
+              <li><span data-nl>Maak een nieuwe sleutel en zet permissies op <b style="color:var(--gold-soft)">alleen “Read”</b>. Vink “Trade” en “Withdraw” NOOIT aan.</span><span data-en>Create a new key and set permissions to <b style="color:var(--gold-soft)">“Read” only</b>. NEVER tick “Trade” or “Withdraw”.</span></li>
+              <li><span data-nl>Kopieer de key + secret en plak ze in de cockpit-instellingen.</span><span data-en>Copy the key + secret and paste them into the cockpit settings.</span></li>
+            </ol>
+            <p class="warn"><span data-nl>⚠ Geef nooit handels- of opnamerechten. Read-only kan letterlijk niets met je geld.</span><span data-en>⚠ Never grant trade or withdraw rights. Read-only can literally do nothing with your money.</span></p>
+          </details>
+        </div>
+      </article>
+
+      <article class="step reveal" data-step="5">
+        <div class="check" role="button" tabindex="0" onclick="toggle(5)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(5);}" aria-label="Stap 5 afvinken">5</div>
+        <div class="card">
+          <h3><span data-nl>Teken je kaart en controleer 'm</span><span data-en>Draw your map and verify it</span></h3>
+          <p><span data-nl>Jóúw kaart is de enige bron van waarheid. Teken je zones en niveaus precies zoals naakte prijsactie het voorschrijft → klik in de cockpit op “Kaart controleren”. De machine verzint nooit setups voor je.</span><span data-en>Your map is the only source of truth. Draw your zones and levels exactly as naked price action prescribes → click “Verify chart” in the cockpit. The machine never invents setups for you.</span></p>
+        </div>
+      </article>
+
+      <article class="step reveal" data-step="6">
+        <div class="check" role="button" tabindex="0" onclick="toggle(6)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle(6);}" aria-label="Stap 6 afvinken">6</div>
+        <div class="card">
+          <h3><span data-nl>Laat de poorten hun werk doen — jij houdt de eindklik</span><span data-en>Let the gates do their work — you keep the final click</span></h3>
+          <p><span data-nl>De cockpit checkt automatisch je regels: risico, reward-risk, positie in de range, richting. Klopt alles, dan staat je ticket klaar. Controleer 'm en plaats de order <b style="color:var(--gold-soft)">zelf</b>. De software plaatst nooit voor je. Read-only, altijd.</span><span data-en>The cockpit automatically checks your rules: risk, reward-risk, position in the range, direction. If it all checks out, your ticket is ready. Review it and place the order <b style="color:var(--gold-soft)">yourself</b>. The software never places it for you. Read-only, always.</span></p>
+        </div>
+      </article>
+
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section class="safe reveal">
+      <h3><span class="dot" aria-hidden="true"></span><span data-nl>Je zit veilig — dit garanderen we</span><span data-en>You're safe — this is what we guarantee</span></h3>
+      <p><span data-nl>Je begint in <b style="color:var(--ink)">oefenmodus</b> (paper), zonder echt geld. De exchange-koppeling is alleen-lezen. De software plaatst nooit een order en verplaatst nooit geld — jij houdt altijd de laatste klik.</span><span data-en>You start in <b style="color:var(--ink)">practice mode</b> (paper), with no real money. The exchange connection is read-only. The software never places an order and never moves money — you always keep the final click.</span></p>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section class="cta-band reveal" id="cta">
+      <div class="doneflag"><span data-nl>✓ Alle stappen gedaan</span><span data-en>✓ All steps done</span></div>
+      <span class="eyebrow"><span data-nl>Van stappen naar routine</span><span data-en>From steps to routine</span></span>
+      <h2 style="margin-top:14px"><span data-nl>Klaar met de stappen? Tijd voor je eerste kaart.</span><span data-en>Done with the steps? Time for your first chart.</span></h2>
+      <p><span data-nl>Begin elke dag met de ochtend-coach: die neemt de dag met je door in scenario's, geen voorspellingen — in gewone taal.</span><span data-en>Start each day with the morning coach: it walks through the day with you in scenarios, not predictions — in plain language.</span></p>
+      <div class="row">
+        <a href="https://beta.mytradingbot.ai" class="btn btn-primary"><span data-nl>Open je cockpit →</span><span data-en>Open your cockpit →</span></a>
+        <a href="/" class="btn btn-ghost"><span data-nl>Terug naar home</span><span data-en>Back to home</span></a>
       </div>
-    </div>
-
-    <div class="step" data-step="2">
-      <div class="check" onclick="toggle(2)">2</div>
-      <div class="card">
-        <h3><span data-nl>Voer je bèta-code in</span><span data-en>Enter your beta code</span></h3>
-        <p><span data-nl>Je ontving een eenmalige code. Die opent jouw eigen, afgeschermde werkruimte — gescheiden van alle anderen, in oefenmodus.</span><span data-en>You received a one-time code. It unlocks your own isolated workspace — separated from everyone else, in practice mode.</span></p>
-        <div class="actions"><a href="/login" class="btn btn-ghost btn-sm"><span data-nl>Naar het codescherm →</span><span data-en>To the code screen →</span></a></div>
-      </div>
-    </div>
-
-    <div class="step" data-step="3">
-      <div class="check" onclick="toggle(3)">3</div>
-      <div class="card">
-        <h3><span data-nl>Open je charts in TradingView</span><span data-en>Open your charts in TradingView</span></h3>
-        <p><span data-nl>MyTradingBot leest mee met jouw TradingView-charts. Zet de vier timeframes klaar die je methode gebruikt; de extensie herkent 'm automatisch.</span><span data-en>MyTradingBot reads along with your TradingView charts. Set up the four timeframes your method uses; the extension detects it automatically.</span></p>
-        <div class="actions"><a href="https://www.tradingview.com/chart/" target="_blank" rel="noopener" class="btn btn-ghost btn-sm"><span data-nl>Open TradingView →</span><span data-en>Open TradingView →</span></a></div>
-      </div>
-    </div>
-
-    <div class="step" data-step="4">
-      <div class="check" onclick="toggle(4)">4</div>
-      <div class="card">
-        <h3><span data-nl>Koppel je account — alleen-lezen</span><span data-en>Connect your account — read-only</span></h3>
-        <p><span data-nl>Zodat de cockpit je posities en buffer kan zien. Belangrijk: de koppeling is <b class="gold" style="color:var(--gold)">alleen-lezen</b>. De software kan nooit een order plaatsen of geld verplaatsen.</span><span data-en>So the cockpit can see your positions and buffer. Important: the connection is <b style="color:var(--gold)">read-only</b>. The software can never place an order or move money.</span></p>
-        <details class="mini">
-          <summary><span data-nl>Zo maak je een read-only API-sleutel (30 sec)</span><span data-en>How to make a read-only API key (30 sec)</span></summary>
-          <ol>
-            <li><span data-nl>Open bij je exchange het API-gedeelte (Account → API).</span><span data-en>At your exchange, open the API section (Account → API).</span></li>
-            <li><span data-nl>Maak een nieuwe sleutel en zet permissies op <b style="color:var(--gold-soft)">alleen “Read”</b>. Vink “Trade” en “Withdraw” NOOIT aan.</span><span data-en>Create a new key and set permissions to <b style="color:var(--gold-soft)">“Read” only</b>. NEVER tick “Trade” or “Withdraw”.</span></li>
-            <li><span data-nl>Kopieer de key + secret en plak ze in de cockpit-instellingen.</span><span data-en>Copy the key + secret and paste them into the cockpit settings.</span></li>
-          </ol>
-          <p class="warn"><span data-nl>⚠ Geef nooit handels- of opnamerechten. Read-only kan letterlijk niets met je geld.</span><span data-en>⚠ Never grant trade or withdraw rights. Read-only can literally do nothing with your money.</span></p>
-        </details>
-      </div>
-    </div>
-
-    <div class="step" data-step="5">
-      <div class="check" onclick="toggle(5)">5</div>
-      <div class="card">
-        <h3><span data-nl>Teken je kaart en controleer 'm</span><span data-en>Draw your map and verify it</span></h3>
-        <p><span data-nl>Jóúw kaart is de enige bron van waarheid. Teken je zones en niveaus precies zoals naakte prijsactie het voorschrijft → klik in de cockpit op “Kaart controleren”. De machine verzint nooit setups voor je.</span><span data-en>Your map is the only source of truth. Draw your zones and levels exactly as naked price action prescribes → click “Verify chart” in the cockpit. The machine never invents setups for you.</span></p>
-      </div>
-    </div>
-
-    <div class="step" data-step="6">
-      <div class="check" onclick="toggle(6)">6</div>
-      <div class="card">
-        <h3><span data-nl>Laat de poorten hun werk doen — jij houdt de eindklik</span><span data-en>Let the gates do their work — you keep the final click</span></h3>
-        <p><span data-nl>De cockpit checkt automatisch je regels: risico, reward-risk, positie in de range, richting. Klopt alles, dan staat je ticket klaar. Controleer 'm en plaats de order <b style="color:var(--gold)">zelf</b>. De software plaatst nooit voor je. Read-only, altijd.</span><span data-en>The cockpit automatically checks your rules: risk, reward-risk, position in the range, direction. If it all checks out, your ticket is ready. Review it and place the order <b style="color:var(--gold)">yourself</b>. The software never places it for you. Read-only, always.</span></p>
-      </div>
-    </div>
-
-  </section>
-
-  <section class="safe">
-    <h3><span class="dot"></span><span data-nl>Je zit veilig — dit garanderen we</span><span data-en>You're safe — this is what we guarantee</span></h3>
-    <p><span data-nl>Je begint in <b style="color:var(--ink)">oefenmodus</b> (paper), zonder echt geld. De exchange-koppeling is alleen-lezen. De software plaatst nooit een order en verplaatst nooit geld — jij houdt altijd de laatste klik.</span><span data-en>You start in <b style="color:var(--ink)">practice mode</b> (paper), with no real money. The exchange connection is read-only. The software never places an order and never moves money — you always keep the final click.</span></p>
-  </section>
-
-  <section class="cta" id="cta">
-    <div class="doneflag"><span data-nl>✓ Alle stappen gedaan</span><span data-en>✓ All steps done</span></div>
-    <h2><span data-nl>Klaar met de stappen? Tijd voor je eerste kaart.</span><span data-en>Done with the steps? Time for your first chart.</span></h2>
-    <p><span data-nl>Begin elke dag met de ochtend-coach: die neemt de dag met je door in scenario's, geen voorspellingen — in gewone taal.</span><span data-en>Start each day with the morning coach: it walks through the day with you in scenarios, not predictions — in plain language.</span></p>
-    <div class="row">
-      <a href="https://beta.mytradingbot.ai" class="btn btn-primary"><span data-nl>Open je cockpit →</span><span data-en>Open your cockpit →</span></a>
-      <a href="/" class="btn btn-ghost"><span data-nl>Terug naar home</span><span data-en>Back to home</span></a>
-    </div>
-  </section>
-
+    </section>
+  </div>
 </main>
 
 <footer>
@@ -269,6 +322,14 @@
     document.getElementById('cta').classList.toggle('ready',done===TOTAL);
   }
   paint();
+
+  // reveal on scroll — motion that whispers, respects reduced-motion
+  (function(){
+    var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(rm){ document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');}); return; }
+    var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%5,4)*50)+'ms';io.observe(el);});
+  })();
 </script>
 </body>
 </html>
