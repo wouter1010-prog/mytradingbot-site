@@ -149,6 +149,7 @@
     var nl=document.documentElement.lang!=='en';
     setStatus('busy', nl?'Extensie openen…':'Opening extension…');
     // Koppel hier je bestaande extensie-flow (bv. postMessage naar de extensie).
+    setTimeout(function(){ location.href='/cockpit-demo'; }, 650);
   }
 
   function setStatus(kind,msg){
@@ -162,15 +163,13 @@
   function demoTest(e){
     e.preventDefault();
     var nl=document.documentElement.lang!=='en';
-    var token=document.getElementById('apiToken').value.trim();
     var btn=document.getElementById('testConnection');
-    if(!token){ setStatus('err', nl?'Vul eerst je API-token in.':'Enter your API token first.'); return false; }
     btn.disabled=true;
     setStatus('busy', nl?'Verbinding testen…':'Testing connection…');
     setTimeout(function(){
-      btn.disabled=false;
-      setStatus('ok', nl?'Demo · geen echte test. Koppel hier je brain-handler.':'Demo · no real test. Connect your brain handler here.');
-    }, 900);
+      setStatus('ok', nl?'Demo · naar de cockpit-preview…':'Demo · opening cockpit preview…');
+      setTimeout(function(){ location.href='/cockpit-demo'; }, 650);
+    }, 800);
     return false;
   }
   // ------------------------------------------------------------------

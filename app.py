@@ -38,6 +38,12 @@ def cockpit_entry():
     return send_from_directory(ROOT, "cockpit-entry-PREMIUM.html")
 
 
+@app.route("/cockpit-demo")
+def cockpit_demo():
+    # Clickable static preview of the users cockpit dashboard.
+    return send_from_directory(ROOT, "cockpit-demo.html")
+
+
 @app.route("/waitlist", methods=["POST"])
 def waitlist():
     data = request.get_json(silent=True) or request.form.to_dict()
