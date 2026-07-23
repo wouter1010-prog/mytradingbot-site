@@ -1,3 +1,0 @@
-# Forceer Railway/Nixpacks om deze repository als Python-app te bouwen.
-# Hierdoor kunnen oude package.json-bestanden de build niet meer naar Node omleiden.
-providers = ["python"]
