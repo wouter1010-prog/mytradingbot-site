@@ -1,0 +1,50 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { JSDOM } = require('jsdom');
+
+const root = __dirname;
+const html = fs.readFileSync(path.join(root, 'mytradingbot-dashboard.html'), 'utf8');
+const script = fs.readFileSync(path.join(root, 'dashboard.js'), 'utf8');
+const dom = new JSDOM(html, { url:'http://localhost/dashboard?demo=1&static=1', runScripts:'outside-only', pretendToBeVisual:true });
+const { window } = dom;
+window.AbortController = global.AbortController;
+window.URL.createObjectURL = () => 'blob:preview';
+window.URL.revokeObjectURL = () => {};
+window.HTMLElement.prototype.scrollIntoView = function() {};
+window.scrollTo = function() {};
+window.HTMLDialogElement.prototype.showModal = function() { this.open = true; };
+window.HTMLDialogElement.prototype.close = function() { this.open = false; };
+window.fetch = async () => { throw new Error('demo may not need network data'); };
+window.eval(script);
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+(async () => {
+  await wait(350);
+  const d = window.document;
+  assert(d.getElementById('dayStartSection'), 'day-start section is missing');
+  assert.equal(d.getElementById('dayStartButton').textContent, 'Neem de dag met me door');
+  d.getElementById('dayStartButton').click();
+  await wait(40);
+  assert(!d.getElementById('dayStartResult').classList.contains('hidden'), 'briefing should become visible');
+  const text = d.getElementById('dayStartResult').textContent;
+  assert.match(text, /Waar staan we/);
+  assert.match(text, /Scenario's/);
+  assert.match(text, /geen-trade-scenario/i);
+  assert.match(text, /procesfocus/i);
+  assert.match(text, /dagstart-toetsvragen/i);
+  assert.match(text, /TP1 verandert niets.*pas na TP2/i);
+  assert.match(text, /ALS .*DAN /);
+  assert(!/https?:\/\//i.test(text));
+  assert(!/dossier\s*\d/i.test(text));
+
+  const en = d.querySelector('[data-language="en"]');
+  en.click();
+  await wait(30);
+  assert.match(d.getElementById('dayStartResult').textContent, /Where we are/);
+  assert.match(d.getElementById('dayStartResult').textContent, /The no-trade scenario/);
+  assert.equal(d.getElementById('footerVersion').textContent, 'UX v8.4.0');
+  console.log('test_day_start.js: bilingual day-start coach, no-trade and TP management passed');
+  window.close();
+})().catch((error) => { console.error(error); window.close(); process.exitCode = 1; });

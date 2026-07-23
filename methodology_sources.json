@@ -1,0 +1,106 @@
+{
+  "version": "8.2.2",
+  "commercial_clean": false,
+  "rules": [
+    {
+      "id": "workflow-top-down",
+      "label": "Top-down workflow",
+      "source_type": "operator-policy",
+      "source_title": "MyTradingBot operationeel beleid",
+      "status": "verified",
+      "statement": "1D context, 4H structuur, 15M opbouw en 3M uitvoering.",
+      "source_label": "OPERATORBELEID"
+    },
+    {
+      "id": "smart-review",
+      "label": "Slimme hercontrole",
+      "source_type": "product-policy",
+      "source_title": "MyTradingBot Smart Review",
+      "status": "verified",
+      "statement": "Ongewijzigde charts behouden hun menselijke goedkeuring; alleen materiële of beslissende wijzigingen vragen hercontrole.",
+      "source_label": "PRODUCTVEILIGHEID"
+    },
+    {
+      "id": "risk-profiles",
+      "label": "Risicoprofielen",
+      "source_type": "operator-policy",
+      "source_title": "Configureerbaar risicobeleid",
+      "status": "verified",
+      "statement": "Scalp 0,5%, day 1,0%, swing 2,0%.",
+      "source_label": "OPERATORBELEID"
+    },
+    {
+      "id": "rr-minimum-3",
+      "label": "Minimale R:R",
+      "source_type": "operator-policy",
+      "source_title": "Ticketveiligheid",
+      "status": "verified",
+      "statement": "Minder dan 3R tot het geldige einddoel is geen orderbaar ticket.",
+      "source_label": "OPERATORBELEID"
+    },
+    {
+      "id": "three-equal-targets",
+      "label": "Drie doelen",
+      "source_type": "operator-policy",
+      "source_title": "Positiebeheer",
+      "status": "verified",
+      "statement": "Drie vrijwel gelijke take-profitdelen; geen verborgen vierde deel.",
+      "source_label": "OPERATORBELEID"
+    },
+    {
+      "id": "break-even",
+      "label": "Break-even na TP2",
+      "source_type": "operator-policy",
+      "source_title": "Positiebeheer",
+      "status": "verified",
+      "statement": "Niet na TP1; pas na TP2 en alleen wanneer de resterende positie in winst staat.",
+      "source_label": "OPERATORBELEID"
+    },
+    {
+      "id": "human-final-click",
+      "label": "Menselijke eindklik",
+      "source_type": "product-safety",
+      "source_title": "Veiligheidsarchitectuur",
+      "status": "verified",
+      "statement": "De software klikt nooit definitief op Buy, Sell, Submit of Confirm.",
+      "source_label": "PRODUCTVEILIGHEID"
+    },
+    {
+      "id": "journal-authoritative-source",
+      "label": "Autoritatieve journaalbron",
+      "source_type": "product-safety",
+      "source_title": "MyTradingBot databeleid",
+      "source_label": "PRODUCTVEILIGHEID",
+      "status": "verified",
+      "statement": "Live prestaties gebruiken uitsluitend geverifieerde broker-sluitingsrecords; paper- en testdata blijven gescheiden."
+    },
+    {
+      "id": "knowledge-source-precedence",
+      "label": "Bronhiërarchie kenniscoach",
+      "source_type": "product-safety",
+      "source_title": "MyTradingBot kennisbankbeleid",
+      "status": "verified",
+      "statement": "Operatorbeleid en productveiligheid gaan altijd voor op externe videolessen; video-inhoud is alleen educatieve context en kan nooit een actuele setup of order vrijgeven.",
+      "source_label": "PRODUCTVEILIGHEID"
+    },
+    {
+      "id": "curated-coach-dossiers",
+      "label": "Primaire coachdossiers",
+      "source_type": "operator-curated-knowledge",
+      "source_title": "MyTradingBot gecureerde coachkennis",
+      "status": "verified",
+      "statement": "De coach gebruikt per vraag twee tot drie gecureerde themadossiers als primaire educatieve laag; videolessen zijn alleen aanvullend.",
+      "source_label": "PRODUCTVEILIGHEID"
+    }
+  ],
+  "policies": {
+    "knowledge_ingestion_default": "disabled",
+    "external_content_requires_rights": true,
+    "investment_advice_claim": false,
+    "doopiecash_catalog_private_use_only": true,
+    "coach_visible_sources_default": false,
+    "dynamic_transcript_quarantine": true,
+    "curated_dossiers_primary": true
+  },
+  "external_knowledge_rights_verified": false
+}

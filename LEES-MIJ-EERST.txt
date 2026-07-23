@@ -1,0 +1,8 @@
+MYTRADINGBOT UX 8.2.8 HOTFIX
+
+Herstelt de lege Dagboek-, Leren- en Beheertabs na de R18-deploy.
+Motor v8.2.2, schema 86, dagstart-backend en kennisimport blijven ongewijzigd.
+
+Laat Fable eerst FABLE-UX-8.2.8-VERIFICATIEPROMPT.md uitvoeren.
+Na GO: back-up /data, Railway-pakket deployen en dashboard?v=828 hard verversen.
+De extensie blijft v8.2.6.

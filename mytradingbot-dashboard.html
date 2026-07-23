@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#071022" name="theme-color"/>
+<meta content="MyTradingBot Focus Cockpit: één duidelijke volgende actie per scherm, met alle detail rustig op de achtergrond." name="description"/>
+<title>MyTradingBot Focus Cockpit v8.4.0</title>
+<link href="/assets/dashboard.css?v=8.4.0" rel="stylesheet"/>
+</head>
+<body>
+<div class="demo-banner hidden" id="demoBanner" role="status">DEMO — GEEN ECHTE TRADE OF ACCOUNTDATA</div>
+<div aria-labelledby="loginTitle" aria-modal="true" class="login-layer" id="loginLayer" role="dialog">
+<form class="login-card" id="loginForm">
+<div aria-label="Taal kiezen" class="language-switch login-language-switch" data-language-switch="" role="group">
+<button aria-pressed="true" class="language-button active" data-language="nl" title="Nederlands" type="button"><span aria-hidden="true" class="language-flag flag-nl"></span><span>NL</span></button>
+<button aria-pressed="false" class="language-button" data-language="en" title="English" type="button"><span aria-hidden="true" class="language-flag flag-gb"></span><span>EN</span></button>
+</div>
+<div class="brand"><span aria-hidden="true" class="brand-dot"></span><div><span>MYTRADINGBOT</span><strong>Handelscockpit</strong></div></div>
+<p class="eyebrow">Beveiligde omgeving</p>
+<h1 id="loginTitle">Open jouw cockpit</h1>
+<p class="muted">Open de cockpit via de extensie of gebruik je persoonlijke beta-token. Iedere tester heeft een geïsoleerde werkruimte.</p>
+<label for="tokenInput">API-token</label>
+<div class="password-row">
+<input autocomplete="current-password" id="tokenInput" minlength="32" required="" type="password"/>
+<button class="button ghost compact" id="toggleToken" type="button">Tonen</button>
+</div>
+<button class="button primary wide" type="submit">Verbinding testen</button>
+<p class="notice danger hidden" id="loginError" role="alert"></p>
+</form>
+</div>
+<div aria-busy="true" class="app-shell" id="app">
+<header class="topbar">
+<a aria-label="Naar het overzicht" class="brand brand-link" href="#overzicht">
+<span aria-hidden="true" class="brand-dot"></span>
+<div><span>MYTRADINGBOT</span><strong>Focus cockpit <small>UX v8.4.0</small></strong></div>
+</a>
+<div aria-label="Systeemstatus" class="top-summary"><label class="asset-select" for="assetSelect"><span>Markt</span><select id="assetSelect"><option value="BTC">BTCUSDT</option></select></label><div aria-live="polite" class="top-status" title="Statusdetails worden geladen"><span>Status</span><strong id="headerStatus">Laden…</strong></div><span class="sr-only" id="headerBalance">—</span><span class="sr-only" id="headerUpdated">—</span><span class="sr-only" id="headerLayers">0/4</span><span class="sr-only" id="headerVerified">0/4</span><span class="sr-only" id="headerWorkspace">—</span></div>
+<div class="top-actions">
+<div aria-label="Taal kiezen" class="language-switch" data-language-switch="" role="group">
+<button aria-pressed="true" class="language-button active" data-language="nl" title="Nederlands" type="button"><span aria-hidden="true" class="language-flag flag-nl"></span><span>NL</span></button>
+<button aria-pressed="false" class="language-button" data-language="en" title="English" type="button"><span aria-hidden="true" class="language-flag flag-gb"></span><span>EN</span></button>
+</div>
+<button class="button quiet" id="feedbackButton" type="button">Feedback</button>
+<button class="button quiet" id="refreshButton" type="button">Verversen</button>
+<button class="button ghost" id="logoutButton" type="button">Uitloggen</button>
+</div>
+</header><nav aria-label="Hoofdnavigatie" class="app-nav" id="appNav">
+<button aria-current="page" class="active" data-view="today" type="button"><span>Vandaag</span><small>Wat moet ik nu doen?</small></button>
+<button data-view="journal" type="button"><span>Dagboek</span><small>Trades en resultaten</small></button>
+<button data-view="learn" type="button"><span>Leren</span><small>Coach en lessen</small></button>
+<button data-view="manage" type="button"><span>Beheer</span><small>Testers en techniek</small></button>
+</nav>
+<main data-active-view="today" id="overzicht">
+
+
+
+
+<section aria-labelledby="focusTitle" class="focus-grid focus-only view-section view-today" data-view-section="today" id="todaySummary">
+<article class="panel focus-card neutral" id="decisionCard">
+<div class="focus-topline">
+<div><p class="eyebrow">Volgende stap</p><h1 id="focusTitle">Even je cockpit laden</h1></div>
+<span class="badge neutral" id="decisionBadge">WACHTEN</span>
+</div>
+<p class="focus-reason" id="decisionReason">Je rekening en eventuele lopende positie worden gecontroleerd.</p>
+<div class="next-action" id="nextAction"><span>Wat nu?</span><strong>Even wachten</strong></div><button class="button primary focus-action" id="focusActionButton" type="button">Even wachten</button>
+<div aria-label="Handelsplan" class="trade-plan hidden" id="tradePlan">
+<div><span>Richting</span><strong id="planDirection">—</strong></div>
+<div><span>Instap</span><strong class="mono" id="planEntry">—</strong></div>
+<div><span>Stop-loss</span><strong class="mono" id="planStop">—</strong></div>
+<div><span>Doelen</span><strong class="mono" id="planTargets">—</strong></div>
+<div><span>Max. R</span><strong class="mono" id="planRr">—</strong></div>
+<div><span>Risico</span><strong class="mono" id="planRisk">—</strong></div>
+</div>
+</article>
+
+</section><section aria-labelledby="dayStartTitle" class="section view-section view-today day-start-section" data-view-section="today" id="dayStartSection">
+<details class="panel day-start-card secondary-panel" data-collapse-key="today-day-start" id="dayStartCard"><summary class="secondary-summary"><div><p class="eyebrow">Dagstart-coach</p><h2 id="dayStartTitle">Neem de dag met me door</h2><p class="muted">Scenario's, geen voorspellingen. Geen trade is een volwaardige uitkomst.</p></div><span class="summary-meta"><span class="badge neutral day-start-summary-badge">DAGSTART</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body secondary-panel-body"><div class="secondary-panel-actions"><button class="button primary" id="dayStartButton" type="button">Neem de dag met me door</button></div>
+
+<div class="day-start-empty" id="dayStartEmpty"><strong>Briefing klaar</strong><span>Open wanneer je je dag bewust wilt beginnen.</span></div>
+<div aria-live="polite" class="day-start-result hidden" id="dayStartResult">
+<div class="day-start-result-head"><div><p class="eyebrow">Mentorbriefing</p><h3 id="dayStartResultTitle">Jouw dagstart-briefing</h3><p class="muted" id="dayStartSubtitle"></p></div><span class="badge neutral" id="dayStartBadge">SCENARIO'S</span></div>
+<div class="day-start-sections" id="dayStartSections"></div>
+<form class="day-start-followup" id="dayStartFollowupForm"><label for="dayStartQuestion">Vraag door over deze dagstart</label><div><input id="dayStartQuestion" placeholder="Bijvoorbeeld: waar moet ik vandaag vooral níét op reageren?"/><button class="button quiet" type="submit">Vraag coach</button></div></form>
+<div class="coach-messages day-start-chat" id="dayStartMessages"></div>
+</div>
+</div></details>
+</section><section aria-labelledby="disciplineTitle" class="section discipline-section view-section view-today" data-view-section="today" id="disciplineSection">
+<details class="panel discipline-card secondary-panel" data-collapse-key="today-discipline" id="disciplinePanel"><summary class="secondary-summary">
+<div><p class="eyebrow">Proces boven uitkomst</p><h1 id="disciplineTitle">Jouw discipline vandaag</h1><p class="muted" id="disciplineSummary">De score gebruikt alleen procesdata; winst of verlies telt niet mee.</p></div>
+
+<span class="summary-meta"><span class="badge neutral" id="disciplineBadge">DATA LADEN</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body secondary-panel-body">
+
+<div class="discipline-grid">
+<div class="discipline-score-block"><span>Discipline-score</span><strong class="mono" id="disciplineScore">—</strong><small id="disciplineScoreLabel">Nog geen procesdata</small></div>
+<div class="discipline-metric"><span>Streak</span><strong id="disciplineStreak">—</strong><small id="disciplineStreakMeta">Vandaag nog te verdienen</small></div>
+<div class="discipline-metric"><span>Regels gevolgd</span><strong id="disciplineRules">—</strong><small id="disciplineRulesMeta">Alleen beoordeelde trades</small></div>
+<div class="discipline-metric"><span>Procesgrade-trend</span><strong id="disciplineTrend">—</strong><small id="disciplineTrendMeta">A, B en C — zonder P&amp;L</small></div>
+</div>
+<div class="discipline-action-row">
+<div><strong id="disciplineTodayTitle">Verdien je dag</strong><p class="muted" id="disciplineTodayText">Doe je dagstart of leg bewust een kijkdag vast.</p></div>
+<button class="button quiet" id="noTradeDayButton" type="button">Ik heb vandaag bewust niet gehandeld</button>
+</div>
+<details class="discipline-breakdown" id="disciplineBreakdown">
+<summary><span>Hoe wordt deze score opgebouwd?</span><i></i></summary>
+<div class="discipline-breakdown-grid">
+<div><span>Regelgedrag</span><strong id="disciplineBreakdownRules">—</strong></div>
+<div><span>Procesgrades</span><strong id="disciplineBreakdownGrades">—</strong></div>
+<div><span>Dagritme</span><strong id="disciplineBreakdownRoutine">—</strong></div>
+</div>
+<p class="muted">Geen P&amp;L, winrate of rekeninggroei. Alleen wat jij kon controleren.</p>
+</details>
+</div></details>
+</section><section aria-labelledby="accountGuardTitle" class="section account-guard-section view-section view-today" data-view-section="today" id="accountGuardSection">
+<details class="panel account-guard-card secondary-panel" data-collapse-key="today-commitment" id="accountGuardPanel"><summary class="secondary-summary"><div><p class="eyebrow">Vrijwillig, één richting</p><h2 id="accountGuardTitle">Dagbuffer &amp; Commitment Mode</h2><p class="muted" id="accountGuardSummary">Zie hoeveel rustige ruimte er vandaag nog is. Geen P&amp;L-teller, alleen de resterende buffer.</p></div><span class="summary-meta"><span class="badge neutral" id="accountGuardBadge">UIT</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body secondary-panel-body">
+
+<div class="account-guard-grid">
+<div class="buffer-card"><span>Resterende dagbuffer</span><strong class="mono" id="accountGuardBuffer">—</strong><div aria-label="Resterende dagbuffer" class="buffer-track" id="accountGuardBufferTrack"><i id="accountGuardBufferFill"></i></div><small id="accountGuardBufferMeta">Activeer Commitment Mode om deze limiet voor vandaag te vergrendelen.</small></div>
+<div class="guard-metric"><span>Positiehek</span><strong id="accountGuardPosition">Max. 1</strong><small id="accountGuardPositionMeta">Niet actief</small></div>
+<div class="guard-metric"><span>Afkoeltijd</span><strong id="accountGuardCooldown">Geen</strong><small id="accountGuardCooldownMeta">Na een stop-out</small></div>
+<div class="guard-metric"><span>Reset</span><strong id="accountGuardReset">Morgen</strong><small>Europe/Amsterdam</small></div>
+</div>
+<form class="commitment-form" id="commitmentForm">
+<label for="commitmentLossLimit"><span>Dagverlieslimiet</span><select id="commitmentLossLimit"><option value="0.5">0,5%</option><option value="1">1,0%</option><option value="1.5">1,5%</option><option selected="" value="2">2,0%</option></select></label>
+<button class="button primary" id="commitmentActivateButton" type="submit">Commitment Mode activeren</button>
+</form>
+<p class="notice info account-guard-notice" id="accountGuardNotice">Eenmaal actief kan dit hek vandaag niet uit of ruimer. Morgen kies je opnieuw.</p>
+</div></details>
+</section><section aria-labelledby="accountTitle" class="section secondary-section view-section view-today" data-view-section="today" id="accountSection"><details class="panel account-card secondary-panel" data-collapse-key="today-account" id="accountPanel"><summary class="secondary-summary"><div><p class="eyebrow">Alleen-lezen via Bybit</p><h2 id="accountTitle">Jouw rekening</h2></div><span class="summary-meta"><span class="badge neutral" id="accountFreshness">LADEN</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body secondary-panel-body">
+
+<div class="account-grid">
+<div><span>Rekeningwaarde</span><strong class="mono" id="accountEquity">—</strong></div>
+<div><span>Open posities</span><strong id="accountPositions">—</strong></div>
+<div class="price-cell"><span>Huidige BTC-prijs</span><strong class="mono" id="accountPrice">—</strong><small id="accountPriceMeta">Prijs controleren</small></div>
+</div>
+<details class="pnl-disclosure" id="accountPnlDisclosure">
+<summary><span>P&amp;L bewust secundair</span><strong>Toon resultaat</strong><i></i></summary>
+<div class="pnl-disclosure-body"><span>Open resultaat</span><strong class="mono" id="accountOpenPnl">—</strong><small>Je proces staat boven de uitkomst van één trade.</small></div>
+</details>
+<p class="account-engine muted manage-only-copy">Versie: <strong id="brainVersion">—</strong></p></div></details></section><section aria-labelledby="positionTitle" class="section view-section view-today position-section" data-view-section="today" id="positionSection">
+
+
+<details class="panel secondary-panel position-panel" data-collapse-key="today-position" id="positionPanel"><summary class="secondary-summary"><div><p class="eyebrow">Wat je trade nu doet</p><h2 id="positionTitle">Lopende positie</h2></div><span class="summary-meta"><p class="section-note" id="positionMeta">Nog geen positie geladen</p><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body secondary-panel-body"><div id="positionsArea"><article class="panel empty-panel">Lopende posities laden…</article></div></div></details></section><details class="panel focus-collapse view-section view-today" data-collapse-key="charts" data-view-section="today" id="chartWorkflowPanel"><summary>
+<div><p class="eyebrow">Alleen wanneer nodig</p><h2>Je 4 charts</h2><p class="summary-copy">Open dit alleen om charts te lezen of controleren.</p></div>
+<span class="summary-meta"><span class="badge neutral" id="chartWorkflowSummary">LADEN</span><span class="collapse-text">Openen</span><i></i></span>
+</summary><div class="collapsible-body chart-workflow-body"><section aria-labelledby="layersTitle" class="section" id="chartsOverviewSection">
+<div class="section-heading">
+<div><p class="eyebrow">Voortgang</p><h2 id="layersTitle">Je 4 charts</h2></div>
+<p class="section-note">Ik lees ze automatisch. Jij controleert alleen wat nog openstaat.</p>
+</div>
+<div class="layer-rail" id="layerRail" role="list"></div>
+<article class="panel ticket-readiness" id="ticketReadinessCard">
+<div class="panel-head"><div><p class="eyebrow">Volgende stap</p><h3>Wat houdt je tegen?</h3></div><span class="badge neutral" id="ticketReadinessBadge">GEBLOKKEERD</span></div>
+<div class="readiness-grid" id="ticketReadiness"></div>
+<div class="readiness-footer"><p class="muted" id="ticketReadinessReason">Ik kijk wat er nog nodig is.</p><button class="button primary" id="startReviewButton" type="button">Start controle</button></div>
+</article>
+</section><details class="panel collapsible-panel nested-collapse" data-collapse-key="market-map" id="marketMapPanel"><summary><div><p class="eyebrow">Alleen voor controle</p><h3>Marktkaart en zones</h3></div><span class="summary-meta"><span class="badge neutral" id="marketMapSummaryBadge">—</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body"><section aria-labelledby="mapTitle" class="section" id="marketMapSection">
+<div class="section-heading">
+<div><p class="eyebrow">Wat ik op je chart zag</p><h2 id="mapTitle">Marktkaart</h2></div>
+<p class="section-note" id="mapSummary">Nog geen lagen gelezen.</p>
+</div>
+<div class="map-layout">
+<article class="panel map-panel">
+<div class="map-toolbar">
+<div aria-label="Grafieklaag kiezen" class="timeframe-tabs" id="timeframeTabs" role="tablist">
+<button data-timeframe="1D" role="tab" type="button">1D <small>Dagcontext</small></button>
+<button data-timeframe="4H" role="tab" type="button">4H <small>Structuur</small></button>
+<button data-timeframe="15M" role="tab" type="button">15m <small>Opbouw</small></button>
+<button data-timeframe="3M" role="tab" type="button">3m <small>Instap</small></button>
+</div>
+<div class="map-actions">
+<button class="button primary" id="reviewDraftButton" type="button">Controleer deze laag</button>
+<button class="button quiet" id="editLayerButton" type="button">Bewerk gecontroleerde laag</button>
+</div>
+</div>
+<div class="map-content">
+<div class="preview-wrap">
+<div class="preview-head"><div><p class="eyebrow">Laatste opname</p><h3 id="previewTitle">Geen grafiek</h3></div><span class="badge neutral" id="previewConfidence">—</span></div>
+<div class="chart-preview">
+<img alt="Gesynchroniseerde TradingView-grafiek" hidden="" id="chartPreview"/>
+<div class="empty-state" id="previewEmpty"><strong>Nog geen opname</strong><span>Lees deze chart vanuit TradingView.</span></div>
+</div>
+<div class="warning-list" id="draftWarnings"></div>
+</div>
+<aside class="layer-details">
+<div class="panel-head"><div><p class="eyebrow">Gekozen laag</p><h3 id="layerTitle">1D · Dagcontext</h3></div><span class="badge neutral" id="layerStatus">ONTBREEKT</span></div>
+<div class="facts-grid" id="layerFacts"></div>
+<div class="subhead"><h4>Niveaus en zones</h4><span class="muted" id="zoneCount">0</span></div>
+<div class="zone-list" id="layerZones"></div>
+</aside>
+</div>
+</article>
+<aside class="panel guide-card">
+<p class="eyebrow">Rustige werkwijze</p>
+<h3>Dit is alles wat je hoeft te doen</h3>
+<ol class="workflow-steps" id="workflowSteps">
+<li><span>1</span><div><strong>Synchroniseer 1D</strong><p>Dagtrend en grote context.</p></div></li>
+<li><span>2</span><div><strong>Synchroniseer 4H</strong><p>Structuur en HTF-locatie.</p></div></li>
+<li><span>3</span><div><strong>Synchroniseer 15m</strong><p>Lokale opbouw bij het niveau.</p></div></li>
+<li><span>4</span><div><strong>Synchroniseer 3m</strong><p>Eerste lokale kanteling en instap.</p></div></li>
+</ol>
+<div class="notice info" id="guideNote">De automatische extensiestand reageert alleen op een bewuste tijdframe- of symboolwissel.</div>
+</aside>
+</div>
+</section></div></details><details class="panel collapsible-panel nested-collapse technical-only" data-collapse-key="chart-tech" id="chartTechPanel"><summary><div><p class="eyebrow">Voor diagnose</p><h3>Technische details</h3></div><span class="summary-meta"><span class="badge neutral">GEAVANCEERD</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body"><div aria-label="Beslisketen" class="decision-flow" id="decisionFlow"></div><div aria-label="Relatie tussen je 4 charts" class="parent-chain" id="parentChain"></div></div></details></div></details><section aria-labelledby="performanceTitle" class="section performance-section view-section view-journal" data-view-section="journal" id="prestaties">
+<div class="section-heading performance-heading">
+<div><h2 id="performanceTitle">Je orderdagboek</h2></div>
+<div class="performance-heading-meta"><span class="badge neutral" id="performanceSample">DATA LADEN</span><p class="section-note" id="performanceMeta">Elke trade krijgt een procescijfer. Resultaten en patronen staan rustig ingeklapt.</p></div>
+</div>
+
+
+<article aria-labelledby="journalTitle" class="panel journal-card">
+<div class="journal-head">
+<div><h3 id="journalTitle">Afgeronde trades</h3><p class="muted">Proces eerst. Open een regel voor alle bron-, richting- en uitvoeringsdetails.</p></div>
+<div class="journal-actions"><span class="badge neutral" id="journalSourceStatus">BRON CONTROLEREN</span><button class="button quiet compact" id="exportJournalButton" type="button">Exporteer CSV</button></div>
+</div>
+<div aria-label="Orderdagboek filters" class="journal-filters">
+<label>Richting<select id="journalDirectionFilter"><option value="all">Alle richtingen</option><option value="long">Long</option><option value="short">Short</option></select></label>
+<label>Markt<select id="journalSymbolFilter"><option value="all">Alle markten</option></select></label>
+<label>Resultaat<select id="journalResultFilter"><option value="all">Alle resultaten</option><option value="win">Winst</option><option value="loss">Verlies</option><option value="breakeven">Break-even</option></select></label><label>Bron<select id="journalSourceFilter"><option selected="" value="live">Live/legacy/onbekend</option><option value="verified">Alleen Bybit geverifieerd</option><option value="legacy">Alleen legacy-import</option><option value="unknown">Alleen onbekende bron</option><option value="paper">Alleen paper</option><option value="test">Alleen testdata</option><option value="all">Alle bronnen</option></select></label>
+<button class="button ghost compact" id="resetJournalFilters" type="button">Wis filters</button>
+</div>
+<div class="journal-table-wrap">
+<table class="journal-table">
+<thead><tr><th>Datum</th><th>Bron</th><th>Markt</th><th>Richting</th><th>Instap</th><th>Uitstap</th><th>Netto resultaat</th><th>Account %</th><th>Proces</th></tr></thead>
+<tbody id="journalTableBody"></tbody>
+</table>
+<div class="empty-state" hidden="" id="journalEmpty"><strong>Nog geen trades</strong><span>Nieuwe sluitingen verschijnen hier automatisch.</span></div>
+</div>
+<div class="journal-footer"><span class="muted" id="journalShowing">—</span><button class="button ghost compact" hidden="" id="journalMoreButton" type="button">Toon meer</button></div>
+</article><details class="panel performance-board secondary-panel" data-collapse-key="journal-performance"><summary class="secondary-summary"><div><h3>Resultaten en patronen</h3></div><span class="summary-meta"><span class="badge neutral" id="performanceDataBadge">DATA CONTROLEREN</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body secondary-panel-body">
+
+<div aria-label="Kerncijfers" class="performance-kpi-grid performance-kpi-summary" id="performanceSummaryKpis"></div>
+<details class="performance-disclosure" data-collapse-key="performance-details" id="performanceDetailsPanel">
+<summary><div><strong>Toon meer cijfers en patronen</strong><small>Winstfactor, verwachting, kosten, grafiek en verdeling</small></div><span class="summary-meta"><span class="collapse-text">Openen</span><i></i></span></summary>
+<div class="performance-details-body">
+<details class="data-quality-disclosure" data-collapse-key="performance-source" id="performanceSourcePanel"><summary><span>Waar komen deze cijfers vandaan?</span><span class="summary-meta"><span class="collapse-text">Openen</span><i></i></span></summary><div class="notice warning performance-quality" id="performanceDataQuality">Historische dekking controleren…</div></details>
+<div aria-label="Aanvullende prestatiecijfers" class="performance-kpi-grid performance-kpi-advanced" id="performanceAdvancedKpis"></div>
+<div class="performance-visuals">
+<section aria-labelledby="equityCurveTitle" class="performance-chart-card">
+<div class="panel-head"><div><p class="eyebrow">Resultaat door de tijd</p><h3 id="equityCurveTitle">Cumulatieve PnL</h3></div><span class="badge neutral" id="equityCurveMeta">—</span></div>
+<div class="equity-chart-wrap">
+<svg aria-labelledby="equityCurveTitle equityCurveDescription" class="equity-curve" id="equityCurve" role="img" viewbox="0 0 720 240"></svg>
+<p class="sr-only" id="equityCurveDescription">Grafiek met de cumulatieve netto PnL van de zichtbare sluitingsrecords.</p>
+<div class="empty-state" hidden="" id="equityCurveEmpty"><strong>Nog geen grafiek</strong><span>De lijn verschijnt na je eerste sluitingen.</span></div>
+</div>
+<div class="chart-legend"><span><i class="legend-line"></i>Cumulatieve PnL</span><span id="equityStartEnd">—</span></div>
+</section>
+<aside aria-label="Waar verdien of verlies je" class="performance-breakdown-card">
+<div class="panel-head"><div><p class="eyebrow">Patronen</p><h3>Waar verdien of verlies je?</h3></div></div>
+<div class="breakdown-group"><div class="subhead compact"><h4>Richting</h4></div><div class="breakdown-list" id="directionBreakdown"></div></div>
+<div class="breakdown-group"><div class="subhead compact"><h4>Markt</h4></div><div class="breakdown-list" id="symbolBreakdown"></div></div>
+<div class="notice info" id="sampleNotice"></div>
+</aside>
+</div>
+</div>
+</details>
+</div></details></section><section class="section view-section view-learn" data-view-section="learn" id="learnView"><div class="section-heading"><div><h2>Leren van je eigen trades</h2></div><p class="section-note">Open alleen de coach, les of reflectie die je nu nodig hebt.</p></div><details class="panel collapsible-panel learn-source-panel" data-collapse-key="learning-sources" id="knowledgeSourcePanel">
+<summary><div><p class="eyebrow">Bronnen op de achtergrond</p><h3 id="knowledgeSourceTitle">Herkomst van je regels</h3><p class="summary-copy" id="knowledgeSourceSummary">Bronnen en beleidskeuzes zijn beschikbaar wanneer je ze wilt controleren.</p></div><span class="summary-meta"><span class="badge neutral" id="knowledgeSourceBadge">CONTROLEREN</span><span class="collapse-text">Openen</span><i></i></span></summary>
+<div class="collapsible-body"><article class="source-status-card"><div class="source-status-grid" id="knowledgeSourceGrid"></div><div class="methodology-policy" id="methodologyPolicy"></div><p class="notice warning hidden" id="knowledgeSourceWarning"></p><div class="ingestion-timeline" id="ingestionTimeline"></div></article></div>
+</details><details class="panel collapsible-panel weekly-mentor-panel" data-collapse-key="weekly-mentor" id="weeklyMentorPanel">
+<summary><div><p class="eyebrow">Wekelijkse reflectie</p><h3>Mentor-rapport</h3></div><span class="summary-meta"><span class="badge neutral" id="weeklyMentorBadge">NOG GEEN RAPPORT</span><span class="collapse-text">Openen</span><i></i></span></summary>
+<div class="collapsible-body"><div class="weekly-mentor-content" id="weeklyMentorContent"></div></div>
+</details><details class="panel collapsible-panel deepdives-panel" data-collapse-key="deepdives" id="deepdivesPanel">
+<summary><div><p class="eyebrow">Proces boven uitkomst</p><h3>Trade-lessen &amp; deepdives</h3></div><span class="summary-meta"><span class="badge neutral" id="deepdivesMeta">0 lessen</span><span class="collapse-text">Openen</span><i></i></span></summary>
+<div class="collapsible-body"><div class="deepdives-grid" id="deepdivesList"></div></div>
+</details><div aria-labelledby="coachStyleTitle" class="coach-style-bar">
+<div><p class="eyebrow">Coachstijl</p><h3 id="coachStyleTitle">Helder en stap voor stap</h3><p class="muted" id="coachStyleHint">Standaard legt de coach lastige begrippen uit in gewone taal, met één analogie en een klein voorbeeld.</p></div>
+<label class="coach-mode-toggle" for="coachExpertMode"><input id="coachExpertMode" type="checkbox"/><span><strong>Expertmodus</strong><small>Kort en technisch</small></span></label>
+</div><details class="panel collapsible-panel" data-collapse-key="coach" id="coachPanel">
+<summary><div><p class="eyebrow">Op jouw eigen data</p><h2>Coach</h2></div><span class="summary-meta"><span class="badge good" id="coachModeBadge">HELDER</span><span class="collapse-text">Openen</span><i></i></span></summary>
+<div class="collapsible-body coach-body"><div class="coach-messages" id="coachMessages"><p>Ik gebruik je charts, regels, orderdagboek en leskennis. Ik voorspel de markt niet.</p></div><form class="coach-form" id="coachForm"><textarea id="coachQuestion" placeholder="Bijvoorbeeld: waarom is deze 3m-kanteling nog niet klaar voor een ticket?" rows="3"></textarea><button class="button primary" type="submit">Vraag</button></form></div>
+</details><details class="panel collapsible-panel" data-collapse-key="knowledge" id="knowledgePanel">
+<summary><div><p class="eyebrow">Leskennis</p><h2>Kennisbank</h2></div><span class="summary-meta"><span class="badge neutral" id="knowledgeMeta">0 lessen</span><span class="collapse-text">Openen</span><i></i></span></summary>
+<div class="collapsible-body"><div class="filter-row"><p class="muted">Open alleen wanneer je de onderliggende lessen wilt nalezen.</p><select aria-label="Kennisbank filter" id="knowledgeFilter"><option value="all">Alle lessen</option></select></div><div class="knowledge-list" id="knowledgeList"></div></div>
+</details></section><section class="section view-section view-manage" data-view-section="manage" id="manageView"><div class="section-heading"><div><h2>Beheer en techniek</h2></div><p class="section-note">Testers, bronnen en diagnose blijven uit je dagelijkse handelsflow.</p></div><section aria-labelledby="betaWorkspaceTitle" class="section" id="betaWorkspaceSection">
+<div class="section-heading"><div><p class="eyebrow">Toegang</p><h2 id="betaWorkspaceTitle">Testers en uitnodigingen</h2></div><span class="badge neutral" id="betaModeBadge">LADEN</span></div>
+<article class="panel beta-workspace-card">
+<div class="beta-summary-grid" id="betaWorkspaceSummary"></div>
+<div class="beta-admin hidden" id="ownerBetaAdmin">
+<div class="subhead"><div><p class="eyebrow">Eigenaarsbeheer</p><h3>Nodig een tester uit</h3></div></div>
+<form class="invite-form" id="inviteForm">
+<label>Naam of omschrijving<input id="inviteLabel" placeholder="Bijvoorbeeld: broer Mark" required=""/></label>
+<label>Geldig voor<select id="inviteExpiry"><option value="5m">5 minuten (test)</option><option value="1h">1 uur</option><option selected="" value="24h">24 uur</option><option value="7d">7 dagen</option><option value="14d">14 dagen</option></select></label>
+<button class="button primary" type="submit">Maak eenmalige uitnodiging</button>
+</form>
+<div class="notice info hidden" id="inviteResult"></div>
+<div class="subhead"><h3>Openstaande uitnodigingen</h3><span class="muted" id="inviteCount">0</span></div>
+<div class="tester-list" id="inviteList"></div>
+<details class="admin-history" id="inviteHistoryPanel"><summary><span>Oude uitnodigingen</span><small id="inviteHistoryCount">0</small></summary><div class="tester-list" id="inviteHistoryList"></div></details>
+<div class="subhead"><h3>Actieve beta-testers</h3><span class="muted" id="testerCount">0</span></div>
+<div class="tester-list" id="testerList"></div>
+<details class="admin-history" id="testerHistoryPanel"><summary><span>Ingetrokken testers</span><small id="testerHistoryCount">0</small></summary><div class="tester-list" id="testerHistoryList"></div></details>
+</div>
+<div class="beta-admin hidden" id="testerBetaTools">
+<div class="notice info">Je werkt in een geïsoleerde paper-werkruimte. Grafieken, controles, testjournal en feedback zijn gescheiden van de eigenaar en andere testers.</div>
+<div class="data-actions"><button class="button quiet" id="addTestTradeButton" type="button">Voeg gesimuleerde testtrade toe</button><button class="button quiet" id="exportMyDataButton" type="button">Exporteer mijn data</button></div>
+</div>
+</article>
+</section><section class="section hidden" id="knowledgeManagementSection"><details class="panel collapsible-panel" data-collapse-key="knowledge-management" id="knowledgeManagementPanel"><summary><div><p class="eyebrow">Owner-only kennisinvoer</p><h2>Kennisbron</h2><p class="summary-copy" id="knowledgeManagementSummary">Openbare kanaalbewaking en handmatige Platinum-links gebruiken dezelfde veilige wachtrij.</p></div><span class="summary-meta"><span class="badge neutral" id="knowledgeManagementBadge">CONTROLEREN</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body"><article class="knowledge-management-card"><div class="source-status-grid" id="knowledgeManagementGrid"></div><p class="notice info" id="knowledgeAutoFetchLine">Laatste automatische controle wordt geladen…</p><form class="platinum-queue-form" id="platinumQueueForm"><label>Plak Platinum-link<input id="platinumVideoUrl" inputmode="url" placeholder="https://www.youtube.com/watch?v=…" required=""/></label><button class="button primary" type="submit">Voeg toe aan kenniswachtrij</button></form><p class="notice hidden" id="platinumQueueResult"></p><p class="muted small-copy">Geen Discord-scraping. Alleen de link die jij als eigenaar bewust toevoegt wordt verwerkt. Video-inhoud kan nooit handels- of risicopoorten wijzigen.</p></article></div></details></section><section class="section hidden" id="journalPatternGateSection"><details class="panel collapsible-panel" data-collapse-key="journal-pattern-gates" id="journalPatternGatePanel"><summary><div><p class="eyebrow">Owner-only · mens beslist</p><h2>Dagboek → poortsuggesties</h2><p class="summary-copy" id="journalPatternGateSummary">Patronen worden alleen voorgesteld. Geen regel wordt automatisch geactiveerd.</p></div><span class="summary-meta"><span class="badge neutral" id="journalPatternGateBadge">0 OPEN</span><span class="collapse-text">Openen</span><i></i></span></summary><div class="collapsible-body"><article class="pattern-gate-card"><div class="notice info" id="journalPatternGateSafety">Suggesties verlopen. Geactiveerde regels blijven zichtbaar tot jij ze bewust deactiveert met bevestiging en reden.</div><div class="pattern-gate-columns"><section><div class="subhead"><div><p class="eyebrow">Voorstellen</p><h3>Terugkerende verliespatronen</h3></div></div><div class="pattern-suggestion-list" id="journalPatternSuggestions"></div></section><section><div class="subhead"><div><p class="eyebrow">Extra cockpitpoorten</p><h3>Actieve regels</h3></div></div><div class="pattern-rule-list" id="journalPatternRules"></div></section></div><details class="pattern-audit"><summary>Audit-trail bekijken</summary><div class="pattern-audit-list" id="journalPatternAudit"></div></details></article></div></details></section><details class="panel collapsible-panel" data-collapse-key="audit" id="auditPanel">
+<summary><div><p class="eyebrow">Technische controle</p><h2>Systeemaudit</h2><p class="summary-copy audit-summary-line" id="auditStatusLine">Laatste run wordt gecontroleerd…</p></div><span class="summary-meta"><span class="badge neutral" id="auditMeta">0 fouten</span><span class="collapse-text">Openen</span><i></i></span></summary>
+<div class="collapsible-body"><div class="activity-list" id="activityTimeline"></div></div>
+</details></section>
+</main>
+<footer><span>MyTradingBot Focus Cockpit <strong id="footerVersion">UX v8.4.0</strong></span><span>Alleen-lezen · jij houdt altijd de eindklik</span></footer>
+</div>
+<dialog aria-labelledby="tradeInspectorTitle" class="review-dialog trade-inspector" id="tradeInspector">
+<div class="dialog-head"><div><p class="eyebrow">Volledige recordinspectie</p><h2 id="tradeInspectorTitle">Sluitingsrecord</h2><p class="muted" id="tradeInspectorSubtitle"></p></div><button aria-label="Sluiten" class="icon-button" id="closeTradeInspector" type="button">×</button></div>
+<div class="trade-inspector-body" id="tradeInspectorBody"></div>
+</dialog>
+<dialog aria-labelledby="feedbackTitle" class="review-dialog compact-dialog" id="feedbackDialog">
+<form class="review-card" id="feedbackForm" method="dialog">
+<div class="dialog-head"><div><p class="eyebrow">Private beta</p><h2 id="feedbackTitle">Stuur feedback</h2></div><button aria-label="Sluiten" class="icon-button" id="closeFeedback" type="button">×</button></div>
+<p class="muted">Beschrijf wat je deed, wat je verwachtte en wat er gebeurde. Deel nooit je token of API-sleutels.</p>
+<div class="form-grid"><label>Categorie<select id="feedbackCategory"><option value="bug">Fout of blokkade</option><option value="duidelijkheid">Onduidelijke uitleg</option><option value="ontwerp">Ontwerp en gebruiksgemak</option><option value="idee">Verbeteridee</option></select></label><label class="span-2">Feedback<textarea id="feedbackMessage" maxlength="4000" required="" rows="7"></textarea></label></div>
+<div class="dialog-actions"><p class="notice hidden" id="feedbackStatus"></p><div><button class="button quiet" id="cancelFeedback" type="button">Annuleren</button><button class="button primary" type="submit">Verstuur feedback</button></div></div>
+</form>
+</dialog>
+<dialog aria-labelledby="reviewTitle" class="review-dialog" id="reviewDialog">
+<form id="reviewForm" method="dialog">
+<div class="dialog-head">
+<div><p class="eyebrow">Begeleide controle</p><h2 id="reviewTitle">Chart controleren</h2><p class="muted" id="reviewSubtitle">Ik heb alles al ingevuld. Kijk alleen of trend, zones en signaal kloppen.</p><div aria-label="Controlevoortgang" class="review-progress" id="reviewProgress"></div></div>
+<button aria-label="Sluiten" class="icon-button" id="closeReview" type="button">×</button>
+</div>
+<div class="review-layout">
+<aside>
+<div class="chart-preview tall"><img alt="Grafiek ter controle" hidden="" id="reviewPreview"/><div class="empty-state" id="reviewPreviewEmpty"><strong>Geen opname</strong><span>Er is nog geen preview.</span></div></div>
+<div class="warning-list" id="reviewWarnings"></div>
+</aside>
+<div class="review-editor">
+<div class="form-grid">
+<label>Markt<input id="reviewAsset" readonly=""/></label>
+<label>Tijdframe<input id="reviewTimeframe" readonly=""/></label>
+<label>Trend<select id="reviewTrend"><option value="unknown">Onbekend</option><option value="up">Stijgend</option><option value="down">Dalend</option><option value="range">Zijwaarts</option></select></label>
+<label>Prijsbeweging richting de zone<select id="reviewApproach"><option value="unknown">Onbekend</option><option value="up">Stijgend richting zone</option><option value="down">Dalend richting zone</option><option value="range">Zijwaarts richting zone</option></select></label>
+<label>Profiel<select id="reviewTradeType"><option value="scalp">Scalp · 0,5%</option><option value="day">Dagtrade · 1%</option><option value="swing">Swingtrade · 2%</option></select></label>
+<label>Bereik laag<input id="reviewRangeLow" inputmode="decimal"/></label>
+<label>Bereik hoog<input id="reviewRangeHigh" inputmode="decimal"/></label>
+<label class="span-2">Notitie<input id="reviewContextNote" maxlength="700" placeholder="Wat is op deze grafiek aantoonbaar zichtbaar?"/></label>
+</div>
+<section class="review-special hidden" id="setupReview">
+<h3>15m-opbouw</h3>
+<div class="form-grid">
+<label>Type<select id="setupType"><option value="none">Nog geen setup</option><option value="reversal">Omkering</option><option value="breakout">Uitbraak</option><option value="continuation">Vervolg</option><option value="range_rotation">Rotatie binnen bereik</option><option value="compression">Samenpersing</option></select></label>
+<label>Richting<select id="setupDirection"><option value="unknown">Onbekend</option><option value="long">Long</option><option value="short">Short</option></select></label>
+<label class="span-2">Bewijs<input id="setupEvidence" maxlength="700"/></label>
+<label class="check-field span-2"><input id="setupConfirmed" type="checkbox"/> Ik heb de 15m-opbouw op de grafiek gecontroleerd.</label>
+</div>
+</section>
+<section class="review-special hidden" id="triggerReview">
+<h3>3m-signaal</h3>
+<div class="form-grid">
+<label>Signaal<select id="triggerType"><option value="none">Nog geen signaal</option><option value="local_reversal">Lokale kanteling</option><option value="sweep_reclaim">Sweep + herovering</option><option value="breakout_retest">Uitbraak + hertest</option><option value="continuation">Vervolg</option></select></label>
+<label>Richting<select id="triggerDirection"><option value="unknown">Onbekend</option><option value="long">Long</option><option value="short">Short</option></select></label>
+<label>Lokale trend ervoor<select id="triggerLocalBefore"><option value="unknown">Onbekend</option><option value="down">Dalend</option><option value="up">Stijgend</option><option value="range">Zijwaarts</option></select></label>
+<label>Signaalprijs<input id="triggerPrice" inputmode="decimal"/></label>
+<label class="span-2">Bewijs<input id="triggerEvidenceText" maxlength="700"/></label>
+</div>
+<div class="flag-editor" id="triggerFlagEditor"></div>
+<label class="check-field"><input id="triggerConfirmed" type="checkbox"/> Ik heb het 3m-signaal en de lokale kanteling gecontroleerd.</label>
+<div class="ticket-choice">
+<label class="check-field"><input id="ticketRequested" type="checkbox"/> Ik wil van dit specifieke signaal nu een orderticket voorbereiden.</label>
+<p class="muted">Voor normale chartcontrole is geen stop nodig. Alleen bij een concrete trade vul je hieronder eenmalig de instapzone en technische stop in.</p>
+<div class="form-grid hidden" id="ticketFields">
+<label>Gekozen instapzone<select id="ticketEntryZone"><option value="">Kies een zone</option></select></label>
+<label>Technische stop voor dit ticket<input id="ticketStop" inputmode="decimal" placeholder="Alleen voor deze trade"/></label>
+</div>
+</div>
+</section>
+<div class="zones-head"><div><p class="eyebrow">Automatisch ingevuld</p><h3>Niveaus en zones</h3></div><button class="button quiet compact" id="addZoneButton" type="button">+ Zone</button></div>
+<p class="muted">Controleer alleen de zones die jij echt getekend hebt. Open orders, entry/SL/TP-lijnen, signalen en de actuele prijs tellen nooit als zone.</p>
+<div class="zone-editor" id="zoneEditor"></div>
+</div>
+</div>
+<div class="dialog-actions"><p class="notice danger hidden" id="reviewError" role="alert"></p><div><button class="button ghost" id="cancelReview" type="button">Annuleren</button><button class="button primary" id="confirmReview" type="submit">Opslaan en volgende laag</button></div></div>
+</form>
+</dialog>
+<dialog aria-labelledby="reviewCompleteTitle" class="review-dialog compact-dialog review-complete-dialog" id="reviewCompleteSummary">
+<div class="review-card">
+<div class="dialog-head"><div><p class="eyebrow">Controle afgerond</p><h2 id="reviewCompleteTitle">Je marktkaart is compleet</h2><p class="muted" id="reviewCompleteLead">Samenvatting laden…</p></div><button aria-label="Sluiten" class="icon-button" id="reviewCompleteClose" type="button">×</button></div>
+<div class="review-complete-layers" id="reviewCompleteLayers"></div>
+<div class="notice good"><strong>Klopt dit?</strong> Deze samenvatting bevestigt alleen wat je op je charts hebt gecontroleerd. Er wordt geen orderticket aangemaakt en niets automatisch geplaatst.</div>
+<div class="dialog-actions"><span></span><div><button class="button quiet" id="reviewCompleteMap" type="button">Bekijk marktkaart</button><button class="button primary" id="reviewCompleteDone" type="button">Ja, klaar</button></div></div>
+</div>
+</dialog>
+<template id="zoneTemplate">
+<article class="zone-editor-row">
+<div class="zone-row-head"><span class="zone-index">ZONE</span><span class="zone-confidence">—</span><button aria-label="Zone verwijderen" class="icon-button remove-zone" type="button">×</button></div>
+<div class="form-grid zone-fields">
+<label>Rol<select data-field="role"><option value="unknown">Onbekend</option><option value="support">Steun</option><option value="resistance">Weerstand</option></select></label>
+<label>Functie<select data-field="intent"><option value="structure">Structuur</option><option value="target">Doel</option><option value="range_boundary">Bereikgrens</option></select></label>
+<label>Top<input data-field="top" inputmode="decimal"/></label>
+<label>Onderkant<input data-field="bottom" inputmode="decimal"/></label>
+<label>Tests<input data-field="tests" max="99" min="0" type="number"/></label>
+<label>Confirmaties<input data-field="confirmations" max="20" min="0" type="number"/></label>
+<label class="span-2">Reden<input data-field="reason" maxlength="500"/></label>
+<label class="check-field span-2"><input data-field="reviewed" type="checkbox"/> Prijs, rol en functie zijn gecontroleerd.</label>
+</div>
+</article>
+</template>
+<script defer="" src="/assets/dashboard.js?v=8.4.0"></script>
+</body>
+</html>
