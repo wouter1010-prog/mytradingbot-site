@@ -2,6 +2,16 @@ import os, csv, json, datetime
 from flask import Flask, send_from_directory, request, jsonify
 
 app = Flask(__name__, static_folder=None)
+try:
+    from flask_compress import Compress
+    app.config["COMPRESS_STREAMS"] = True  # ook bestands-responses (send_from_directory)
+    app.config["COMPRESS_MIMETYPES"] = [
+        "text/html", "text/css", "text/javascript", "application/javascript",
+        "application/json", "image/svg+xml",
+    ]
+    Compress(app)  # gzip/brotli voor html/js/css/json (media blijft ongecomprimeerd)
+except Exception:
+    pass  # site werkt ook zonder
 ROOT = os.path.dirname(os.path.abspath(__file__))
 WAITLIST = os.path.join(ROOT, "waitlist.csv")
 
@@ -146,8 +156,15 @@ def assets(path):
 
 @app.after_request
 def cache(resp):
-    if resp.mimetype in ("video/mp4", "image/jpeg", "image/png", "image/svg+xml"):
+    if resp.mimetype in ("text/html", "text/css", "application/javascript", "text/javascript", "application/json"):
+        resp.direct_passthrough = False  # zodat flask-compress bestandsresponses kan gzippen
+    if resp.mimetype in ("video/mp4", "image/jpeg", "image/png", "image/svg+xml", "image/webp",
+                         "text/css", "application/javascript", "text/javascript", "font/woff2"):
+        # gehashte bestandsnamen -> agressief cachen
         resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    elif resp.mimetype == "audio/mpeg":
+        # mp3's hebben geen hash in de naam -> korte cache (1 dag)
+        resp.headers["Cache-Control"] = "public, max-age=86400"
     return resp
 
 
