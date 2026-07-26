@@ -1,0 +1,16 @@
+=====================================================================
+ CURSUS V4 LIVE ZETTEN — één upload-ronde
+=====================================================================
+1. Ga naar: https://github.com/wouter1010-prog/mytradingbot-site/upload/main
+2. Sleep ALLE bestanden uit deze map erin (24 stuks; de twee
+   .txt/.md-notities hoeven niet mee, mogen wel).
+   LET OP: cursus-index.html OVERSCHRIJFT de oude — dat hoort zo.
+3. Commit-bericht: Cursus v4 - 19 basislessen + 15 advanced
+4. Railway deployt automatisch (1-2 min). Daarna checken:
+   - www.mytradingbot.ai/cursus  (19 lessen, 7 delen)
+   - www.mytradingbot.ai/cursus/advanced  (15 lessen)
+   - een advanced-les openen met ?review=1 achter de URL
+   Hard verversen (Ctrl+Shift+R) als je oude aantallen ziet.
+Server hoeft NIET aangepast: bestaande routes dekken alles
+(diepe links, media-fallback, beacon). De Manus-debugmap is
+bewust NIET meegeleverd (wordt nergens door de app aangeroepen).
